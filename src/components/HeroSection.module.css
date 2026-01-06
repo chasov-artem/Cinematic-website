@@ -1,0 +1,35 @@
+.heroSection {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: var(--color-black);
+}
+
+.heroContent {
+  text-align: center;
+  z-index: 1;
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: 8rem;
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+}

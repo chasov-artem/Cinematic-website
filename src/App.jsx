@@ -1,12 +1,11 @@
-import './styles/globals.css'
+import "./styles/globals.css";
+import HeroSection from "./components/HeroSection";
 
 function App() {
   return (
     <div className="app">
       {/* Hero Section */}
-      <section className="hero-section">
-        <h1>The Hall of Zero Limits</h1>
-      </section>
+      <HeroSection />
 
       {/* Tutorial Section */}
       <section className="tutorial-section">
@@ -38,7 +37,7 @@ function App() {
         <p>Footer</p>
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
