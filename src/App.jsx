@@ -1,5 +1,6 @@
 import "./styles/globals.css";
-import HeroSection from "./components/HeroSection";
+import HeroSection from "./components/HeroSection/HeroSection";
+import Tutorial from "./components/Tutorial/Tutorial";
 
 function App() {
   return (
@@ -8,9 +9,7 @@ function App() {
       <HeroSection />
 
       {/* Tutorial Section */}
-      <section className="tutorial-section">
-        <h2>Tutorial</h2>
-      </section>
+      <Tutorial />
 
       {/* Origin Stories Section */}
       <section className="stories-section">
