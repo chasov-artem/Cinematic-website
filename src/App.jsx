@@ -1,6 +1,7 @@
 import "./styles/globals.css";
 import HeroSection from "./components/HeroSection/HeroSection";
 import Tutorial from "./components/Tutorial/Tutorial";
+import OriginStories from "./components/OriginStories/OriginStories";
 
 function App() {
   return (
@@ -12,9 +13,7 @@ function App() {
       <Tutorial />
 
       {/* Origin Stories Section */}
-      <section className="stories-section">
-        <h2>Origin Stories</h2>
-      </section>
+      <OriginStories />
 
       {/* Library Section */}
       <section className="library-section">
