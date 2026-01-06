@@ -1,0 +1,120 @@
+.spriteZeroSection {
+  min-height: 100vh;
+  width: 100%;
+  padding: var(--spacing-xl) 0;
+  position: relative;
+  background-color: var(--color-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-lg);
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto var(--spacing-md);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--color-section-bg);
+}
+
+.video {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: pointer;
+}
+
+.playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--color-white);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: var(--color-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal);
+  z-index: 2;
+}
+
+.playButton:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.description {
+  font-size: 1.25rem;
+  color: var(--color-white);
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .videoWrapper {
+    max-width: 100%;
+  }
+  
+  .playButton {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .icon {
+    font-size: 1.5rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .playButton {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .icon {
+    font-size: 1.25rem;
+  }
+  
+  .description {
+    font-size: 0.9rem;
+  }
+}

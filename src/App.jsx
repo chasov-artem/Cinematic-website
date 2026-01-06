@@ -3,6 +3,8 @@ import HeroSection from "./components/HeroSection/HeroSection";
 import Tutorial from "./components/Tutorial/Tutorial";
 import OriginStories from "./components/OriginStories/OriginStories";
 import Library from "./components/Library/Library";
+import InspirationGarden from "./components/InspirationGarden/InspirationGarden";
+import SpriteZero from "./components/SpriteZero/SpriteZero";
 
 function App() {
   return (
@@ -15,6 +17,12 @@ function App() {
 
       {/* Origin Stories Section */}
       <OriginStories />
+
+      {/* Inspiration Garden Section */}
+      <InspirationGarden />
+
+      {/* Sprite Zero Sugar Section */}
+      <SpriteZero />
 
       {/* Library Section */}
       <Library />

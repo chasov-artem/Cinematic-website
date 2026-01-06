@@ -7,9 +7,15 @@ function AudioPlayer({ src, isPlaying, onPlay, onPause, onEnded }) {
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
-        audioRef.current.play().catch((error) => {
-          console.error("Error playing audio:", error);
-        });
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            // Ігноруємо AbortError - виникає коли play() переривається pause()
+            if (error.name !== "AbortError" && error.name !== "NotAllowedError") {
+              // Тиха обробка інших помилок
+            }
+          });
+        }
       } else {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
@@ -42,9 +48,9 @@ function AudioPlayer({ src, isPlaying, onPlay, onPause, onEnded }) {
         ref={audioRef}
         src={src}
         onEnded={onEnded}
-        preload="metadata"
-        onError={(e) => {
-          console.error("Audio error:", e);
+        preload="none"
+        onError={() => {
+          // Тиха обробка помилок - файл може бути відсутній на етапі розробки
         }}
       />
     </div>
