@@ -2,6 +2,7 @@ import "./styles/globals.css";
 import HeroSection from "./components/HeroSection/HeroSection";
 import Tutorial from "./components/Tutorial/Tutorial";
 import OriginStories from "./components/OriginStories/OriginStories";
+import Library from "./components/Library/Library";
 
 function App() {
   return (
@@ -16,9 +17,7 @@ function App() {
       <OriginStories />
 
       {/* Library Section */}
-      <section className="library-section">
-        <h2>The Library</h2>
-      </section>
+      <Library />
 
       {/* Product Showcase Section */}
       <section className="product-section">
