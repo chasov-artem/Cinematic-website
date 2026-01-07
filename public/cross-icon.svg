@@ -1,0 +1,22 @@
+<svg class="icon-cross" width="35" height="47" viewBox="0 0 35 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g filter="url(#icon-ds_FRFNIGP81)">
+    <rect x="7.99951" y="12" width="19" height="1" rx="0.5" fill="white"></rect>
+    <path d="M17.275 8L17.2718 38.9997" stroke="white" stroke-linecap="round" stroke-dasharray=".75 5 3 11 6.5 3 1"></path>
+  </g>
+  <g filter="url(#icon-ds_2YLWKIBTH)">
+    <rect x="7.99951" y="12" width="19" height="1" rx="0.5" fill="white"></rect>
+    <path d="M17.275 8L17.2718 38.9997" stroke="white" stroke-linecap="round" stroke-dasharray=".75 5 3 11 6.5 3 1"></path>
+  </g>
+  <rect x="7.99951" y="12" width="19" height="1" rx="0.5" fill="white"></rect>
+  <path d="M17.275 8L17.2718 38.9997" stroke="white" stroke-linecap="round" stroke-dasharray=".75 5 3 11 6.5 3 1"></path>
+  <defs>
+    <filter id="icon-ds_FRFNIGP81" x="-10" y="-10" width="55" height="67">
+      <feGaussianBlur stdDeviation="3.75"></feGaussianBlur>
+    </filter>
+    <filter id="icon-ds_2YLWKIBTH" x="-10" y="-10" width="55" height="67">
+      <feGaussianBlur stdDeviation="2.5"></feGaussianBlur>
+    </filter>
+  </defs>
+</svg>
+
+

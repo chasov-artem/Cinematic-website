@@ -1,10 +1,12 @@
 import "./styles/globals.css";
 import HeroSection from "./components/HeroSection/HeroSection";
-import Tutorial from "./components/Tutorial/Tutorial";
+import WelcomeSection from "./components/WelcomeSection/WelcomeSection";
 import OriginStories from "./components/OriginStories/OriginStories";
 import Library from "./components/Library/Library";
 import InspirationGarden from "./components/InspirationGarden/InspirationGarden";
 import SpriteZero from "./components/SpriteZero/SpriteZero";
+import Quiz from "./components/Quiz/Quiz";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -12,8 +14,8 @@ function App() {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Tutorial Section */}
-      <Tutorial />
+      {/* Welcome Section */}
+      <WelcomeSection />
 
       {/* Origin Stories Section */}
       <OriginStories />
@@ -27,20 +29,11 @@ function App() {
       {/* Library Section */}
       <Library />
 
-      {/* Product Showcase Section */}
-      <section className="product-section">
-        <h2>Product Showcase</h2>
-      </section>
-
       {/* Quiz Section */}
-      <section className="quiz-section">
-        <h2>Quiz</h2>
-      </section>
+      <Quiz />
 
       {/* Footer */}
-      <footer className="footer">
-        <p>Footer</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

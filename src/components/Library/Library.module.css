@@ -48,3 +48,40 @@
   }
 }
 
+/* Bottom center text */
+.bottomCenter {
+  position: absolute;
+  bottom: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+/* Left center button wrapper - mirrored */
+.leftCenterButtonWrapper {
+  left: var(--spacing-md) !important;
+  right: auto !important;
+}
+
+.leftCenterPrevText {
+  left: 150% !important;
+  right: auto !important;
+  padding-left: 1rem !important;
+  padding-right: 0 !important;
+}
+
+.leftCenterCrossIcon {
+  left: 70% !important;
+  right: auto !important;
+  rotate: 90deg !important;
+}
+
+.leftCenterButtonWrapper:hover .leftCenterButtonFrame {
+  transform: translate(-50%, -50%) scale(1.1);
+  opacity: 0.25;
+}
+
+.leftCenterButtonWrapper:hover .leftCenterButtonFrameInner {
+  opacity: 0.15;
+}
+

@@ -1,0 +1,220 @@
+.quizSection {
+  min-height: 100vh;
+  width: 100%;
+  padding: var(--spacing-xl) 0;
+  position: relative;
+  background-color: var(--color-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  width: 100%;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-white);
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.progressBar {
+  width: 100%;
+  height: 4px;
+  background-color: var(--color-section-bg);
+  border-radius: 2px;
+  margin-bottom: var(--spacing-lg);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--color-gold);
+  transition: width var(--transition-normal);
+}
+
+.questionContainer {
+  text-align: center;
+}
+
+.questionNumber {
+  font-size: 1rem;
+  color: var(--color-gold);
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.questionText {
+  font-size: 2rem;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.4;
+}
+
+.optionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.optionCard {
+  padding: var(--spacing-md);
+  background-color: var(--color-section-bg);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  color: var(--color-white);
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.optionCard:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+}
+
+.optionCard.selected {
+  border-color: var(--color-gold);
+  background-color: rgba(212, 175, 55, 0.1);
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.navButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-section-bg);
+  border: 2px solid var(--color-white);
+  border-radius: 8px;
+  color: var(--color-white);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.navButton:hover:not(:disabled) {
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+
+.navButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.resultContent {
+  text-align: center;
+}
+
+.resultText {
+  font-size: 1.5rem;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+.restartButton {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-gold);
+  border: none;
+  border-radius: 8px;
+  color: var(--color-black);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.restartButton:hover {
+  background-color: var(--color-white);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .questionText {
+    font-size: 1.5rem;
+  }
+  
+  .optionsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .resultText {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .questionText {
+    font-size: 1.25rem;
+  }
+  
+  .optionCard {
+    font-size: 1rem;
+  }
+  
+  .resultText {
+    font-size: 1rem;
+  }
+}
+
+/* Bottom center text */
+.bottomCenter {
+  position: absolute;
+  bottom: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+/* Left center button wrapper - mirrored */
+.leftCenterButtonWrapper {
+  left: var(--spacing-md) !important;
+  right: auto !important;
+}
+
+.leftCenterPrevText {
+  left: 150% !important;
+  right: auto !important;
+  padding-left: 1rem !important;
+  padding-right: 0 !important;
+}
+
+.leftCenterCrossIcon {
+  left: 70% !important;
+  right: auto !important;
+  rotate: 90deg !important;
+}
+
+.leftCenterButtonWrapper:hover .leftCenterButtonFrame {
+  transform: translate(-50%, -50%) scale(1.1);
+  opacity: 0.25;
+}
+
+.leftCenterButtonWrapper:hover .leftCenterButtonFrameInner {
+  opacity: 0.15;
+}
+
