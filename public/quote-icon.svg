@@ -1,0 +1,15 @@
+<svg width="41" height="14" viewBox="0 0 41 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M34 7L18 7"
+    stroke="#2DF872"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+  <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M14 7.5C14 7.77614 13.7761 8 13.5 8L6.5 8C6.22386 8 6 7.77614 6 7.5C6 7.22386 6.22386 7 6.5 7L13.5 7C13.7761 7 14 7.22386 14 7.5Z"
+    fill="#2DF872"
+  />
+</svg>
+

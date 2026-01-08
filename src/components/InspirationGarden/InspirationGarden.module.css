@@ -85,6 +85,14 @@
   opacity: 0.15;
 }
 
+/* Hide navigation buttons and other elements when modal is open */
+.hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
 /* Watch buttons container */
 .watchButtonsContainer {
   position: absolute;

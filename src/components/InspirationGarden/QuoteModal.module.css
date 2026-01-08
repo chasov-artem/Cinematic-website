@@ -93,8 +93,8 @@
   letter-spacing: 0.3em;
   text-transform: uppercase;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: center;
   gap: 0.2rem;
   position: relative;
 }
@@ -132,100 +132,155 @@
   display: inline-block;
   font-size: 1rem;
   line-height: 1;
-  filter: drop-shadow(0 0 0.3125rem rgba(153, 255, 136, 0.8))
-    drop-shadow(0 0 0.625rem rgba(153, 255, 136, 0.6))
-    drop-shadow(0 0 1rem rgba(153, 255, 136, 0.4));
+  filter: drop-shadow(0 0 0.1875rem rgba(153, 255, 136, 0.7))
+    drop-shadow(0 0 0.3125rem #99ff88);
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .modalCloseButton:hover .closeX {
   transform: rotate(90deg);
-  filter: drop-shadow(0 0 0.5rem rgba(153, 255, 136, 1))
-    drop-shadow(0 0 1rem rgba(153, 255, 136, 0.8))
-    drop-shadow(0 0 1.5rem rgba(153, 255, 136, 0.6))
-    drop-shadow(0 0 2rem rgba(153, 255, 136, 0.4));
+  filter: drop-shadow(0 0 0.1875rem rgba(153, 255, 136, 0.7))
+    drop-shadow(0 0 0.3125rem #99ff88);
 }
 
 .closeWord {
   color: #ffffff;
 }
 
-/* Center content frame */
-.contentFrame {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-xl);
-  position: relative;
+/* Decorative SVG frame */
+.decorativeFrame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  max-width: 443px;
+  max-height: 603px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.decorativeStar {
+  display: block;
+  margin: 0.5rem auto 0;
+  pointer-events: none;
 }
 
 .quoteContainer {
-  max-width: 900px;
   width: 100%;
-  padding: var(--spacing-lg);
+  height: 100%;
+  padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  box-sizing: border-box;
 }
 
 .quoteSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
+  gap: 2px;
+  margin-bottom: 10px;
 }
 
-.quoteDecorator {
-  width: 60px;
-  height: 2px;
-  background: #99ff88;
-  box-shadow: 0 0 8px rgba(153, 255, 136, 0.6);
+.quoteIconTop {
+  width: 41px;
+  height: 14px;
+  display: block;
+  align-self: flex-start;
+  margin-left: 95px;
+  filter: drop-shadow(0 0 0.1875rem rgba(153, 255, 136, 0.7))
+    drop-shadow(0 0 0.3125rem #99ff88);
+  margin-top: 2rem;
 }
 
+.quoteIconBottom {
+  width: 41px;
+  height: 14px;
+  display: block;
+  align-self: flex-end;
+  margin-right: 150px;
+  filter: drop-shadow(0 0 0.1875rem rgba(153, 255, 136, 0.7))
+    drop-shadow(0 0 0.3125rem #99ff88);
+}
+
+.quoteContainer .quoteSection .quoteText,
 .quoteText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  font-weight: 700;
-  line-height: 1.3;
-  color: #99ff88;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  text-shadow: 0 0 10px rgba(153, 255, 136, 0.5);
+  text-shadow: 0 0 var(--shadow-width-1) var(--shadow-color-1),
+    0 0 var(--shadow-width-2) var(--shadow-color-2);
+}
+
+@media (min-width: 1250px) {
+  .quoteText {
+    font-size: 2rem;
+  }
 }
 
 .characterName {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  font-weight: 600;
-  color: #ffffff;
+  font-family: var(--font-gill-sans);
+  font-weight: 400;
+  margin-right: -0.2em;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.2em;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  margin-top: var(--spacing-md);
+  color: #ffffff;
+  margin-top: 0;
+}
+
+.characterCodeWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .characterCode {
-  font-family: "Courier New", monospace;
-  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
-  color: #99ff88;
+  font-family: Modern Wakandan;
+  font-weight: 400;
+  margin-right: -0.8em;
+  color: #2df872;
+  font-size: 0.5rem;
+  letter-spacing: 0.8em;
   text-align: center;
-  letter-spacing: 0.1em;
-  margin-top: var(--spacing-xs);
-  opacity: 0.8;
+  text-shadow: 0 0 0.1875rem rgba(153, 255, 136, 0.7), 0 0 0.3125rem #99ff88;
+  filter: drop-shadow(0 0 0.1875rem rgba(153, 255, 136, 0.7))
+    drop-shadow(0 0 0.3125rem #99ff88);
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+.decorativeStar {
+  display: block;
+  margin-top: 0.5rem;
+  pointer-events: none;
+  filter: drop-shadow(0 0 0.2rem rgba(255, 255, 255, 0.8))
+    drop-shadow(0 0 0.4rem rgba(255, 255, 255, 0.6))
+    drop-shadow(0 0 0.6rem rgba(255, 255, 255, 0.4));
 }
 
 .description {
   font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
-  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.9);
-  text-align: left;
-  margin-top: var(--spacing-lg);
-  padding: var(--spacing-md);
-  border-left: 2px solid rgba(153, 255, 136, 0.3);
+  font-weight: 400;
+  margin-top: 2rem;
+  color: silver;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
+  opacity: 1;
+  transform: translate(0px, 0px);
+  padding-right: 1rem;
+  padding-left: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -283,5 +338,3 @@
     padding: var(--spacing-sm);
   }
 }
-
-

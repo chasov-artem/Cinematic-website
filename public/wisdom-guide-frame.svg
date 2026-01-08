@@ -1,0 +1,39 @@
+<svg width="860" height="250" viewBox="0 0 860 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="topBorderGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent" stop-opacity="0"/>
+      <stop offset="15%" stop-color="transparent" stop-opacity="0"/>
+      <stop offset="25%" stop-color="rgba(255, 255, 255, 0.2)"/>
+      <stop offset="35%" stop-color="rgba(255, 255, 255, 0.5)"/>
+      <stop offset="45%" stop-color="rgba(255, 255, 255, 0.8)"/>
+      <stop offset="100%" stop-color="rgba(255, 255, 255, 0.8)"/>
+    </linearGradient>
+    <linearGradient id="bottomBorderGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent" stop-opacity="0"/>
+      <stop offset="15%" stop-color="transparent" stop-opacity="0"/>
+      <stop offset="25%" stop-color="rgba(255, 255, 255, 0.2)"/>
+      <stop offset="35%" stop-color="rgba(255, 255, 255, 0.5)"/>
+      <stop offset="45%" stop-color="rgba(255, 255, 255, 0.8)"/>
+      <stop offset="100%" stop-color="rgba(255, 255, 255, 0.8)"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background fill with rounded corners except top-right -->
+  <path d="M0 12C0 5.37258 5.37258 0 12 0H848V0C854.627 0 860 5.37258 860 12V238C860 244.627 854.627 250 848 250H12C5.37258 250 0 244.627 0 238V12Z" fill="rgba(255, 255, 255, 0.05)" fill-opacity="1"/>
+  
+  <!-- Top border with gradient (rounded left, sharp right) -->
+  <path d="M12 0H848C854.627 0 860 5.37258 860 12" stroke="url(#topBorderGradient)" stroke-width="2" fill="none"/>
+  <path d="M0 12C0 5.37258 5.37258 0 12 0" stroke="url(#topBorderGradient)" stroke-width="2" fill="none"/>
+  
+  <!-- Right border -->
+  <line x1="858" y1="12" x2="858" y2="238" stroke="rgba(255, 255, 255, 0.8)" stroke-width="2"/>
+  
+  <!-- Bottom border with gradient (rounded left, sharp right) -->
+  <path d="M12 250H848C854.627 250 860 244.627 860 238" stroke="url(#bottomBorderGradient)" stroke-width="2" fill="none"/>
+  <path d="M0 238C0 244.627 5.37258 250 12 250" stroke="url(#bottomBorderGradient)" stroke-width="2" fill="none"/>
+  
+  <!-- Left border (rounded) -->
+  <path d="M2 12C2 6.47715 6.47715 2 12 2" stroke="rgba(255, 255, 255, 0.2)" stroke-width="2" fill="none"/>
+  <line x1="2" y1="12" x2="2" y2="238" stroke="rgba(255, 255, 255, 0.2)" stroke-width="2"/>
+  <path d="M2 238C2 243.523 6.47715 248 12 248" stroke="rgba(255, 255, 255, 0.2)" stroke-width="2" fill="none"/>
+</svg>

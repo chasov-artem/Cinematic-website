@@ -1,16 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BsHexagon } from "react-icons/bs";
 import { AiOutlineCheck } from "react-icons/ai";
 import NavButtonRight from "../WelcomeSection/NavButtonRight";
 import NavButtonLeft from "../WelcomeSection/NavButtonLeft";
+import SphereIcon from "../WelcomeSection/SphereIcon";
 import QuoteModal from "./QuoteModal";
 import welcomeStyles from "../WelcomeSection/WelcomeSection.module.css";
 import styles from "./InspirationGarden.module.css";
+import { addSectionScrollAnimations } from "../../utils/sectionScrollAnimations";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function InspirationGarden() {
+  const sectionRef = useRef(null);
+  const topLogoRef = useRef(null);
+  const topButtonRef = useRef(null);
+  const leftButtonRef = useRef(null);
+  const rightButtonRef = useRef(null);
+  const watchButtonsRef = useRef(null);
+  const bottomCenterRef = useRef(null);
+  const wisdomContainerRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [watchedQuotes, setWatchedQuotes] = useState(new Set());
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+
+  const wisdomTexts = [
+    "I see you've made it to the Inspiration Garden.\nThis place carries more purpose than simply\nbeing pleasing to the eye.",
+    "Here we've collected monuments that represent\nsome of the many gifts that may find you in this\nhall. Each is unique and inspiring in its own way.\nTake a closer look. One may catch your eye...",
+  ];
 
   const quotes = [
     {
@@ -69,13 +89,48 @@ function InspirationGarden() {
     }
   };
 
+  const handleWisdomNext = () => {
+    setCurrentTextIndex((prev) => {
+      return prev + 1;
+    });
+  };
+
+  const handleWisdomPrev = () => {
+    if (currentTextIndex > 0) {
+      setCurrentTextIndex((prev) => prev - 1);
+    }
+  };
+
+  const isFirstSlide = currentTextIndex === 0;
+  const showWisdomContainer = currentTextIndex < 2;
+
+  useEffect(() => {
+    return addSectionScrollAnimations(sectionRef, {
+      topLogoRef,
+      topButtonRef,
+      leftButtonRef,
+      rightButtonRef,
+      watchButtonsRef,
+      bottomCenterRef,
+      wisdomContainerRef,
+    });
+  }, [currentTextIndex]);
+
   return (
     <section
-      className={styles.inspirationGardenSection}
+      ref={sectionRef}
+      className={`${styles.inspirationGardenSection} ${
+        isModalOpen ? styles.modalOpen : ""
+      }`}
       id="inspiration-garden"
     >
       {/* Top left logo */}
-      <div className={welcomeStyles.topLogo}>
+      <div
+        ref={topLogoRef}
+        className={`${welcomeStyles.topLogo} ${
+          isModalOpen ? styles.hidden : ""
+        }`}
+      >
         <img
           src="/hall-logo.svg"
           alt="The Hall of Zero Limits"
@@ -83,8 +138,70 @@ function InspirationGarden() {
         />
       </div>
 
+      {/* Main content container - Wisdom Guide */}
+      {showWisdomContainer && (
+        <div
+          ref={wisdomContainerRef}
+          className={welcomeStyles.wisdomContainerWrapper}
+        >
+          <div className={welcomeStyles.wisdomContainer}>
+            <img
+              src="/wisdom-guide-frame.svg"
+              alt=""
+              className={welcomeStyles.wisdomContainerFrame}
+            />
+            <div className={welcomeStyles.sphereIcon}>
+              <SphereIcon />
+            </div>
+            <div className={welcomeStyles.wisdomContent}>
+              <div className={welcomeStyles.wisdomText}>
+                <p style={{ whiteSpace: "pre-line" }}>
+                  {wisdomTexts[currentTextIndex] || ""}
+                </p>
+              </div>
+
+              <div className={welcomeStyles.navigationButtons}>
+                <button
+                  className={`${welcomeStyles.navButton} ${
+                    welcomeStyles.navButtonLeft
+                  } ${isFirstSlide ? welcomeStyles.navButtonDisabled : ""}`}
+                  onClick={handleWisdomPrev}
+                  disabled={isFirstSlide}
+                  aria-label="Previous"
+                >
+                  <NavButtonLeft isDisabled={isFirstSlide} />
+                </button>
+                <button
+                  className={`${welcomeStyles.navButton} ${welcomeStyles.navButtonRight}`}
+                  onClick={handleWisdomNext}
+                  aria-label="Next"
+                >
+                  <NavButtonRight />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Left side - GUIDE WISDOM label */}
+      {showWisdomContainer && (
+        <div className={welcomeStyles.wisdomLabelContainer}>
+          <div className={welcomeStyles.wisdomLine}></div>
+          <div className={welcomeStyles.wisdomLabel}>
+            <span className={welcomeStyles.wisdomLabelWord}>WISDOM</span>
+            <span className={welcomeStyles.wisdomLabelWord}>GUIDE</span>
+          </div>
+        </div>
+      )}
+
       {/* Top right - Menu button */}
-      <button className={welcomeStyles.rightTopButton}>
+      <button
+        ref={topButtonRef}
+        className={`${welcomeStyles.rightTopButton} ${
+          isModalOpen ? styles.hidden : ""
+        }`}
+      >
         <svg
           width="33"
           height="28"
@@ -100,65 +217,82 @@ function InspirationGarden() {
       </button>
 
       {/* Left center - PREV button */}
-      <div
-        className={`${welcomeStyles.rightCenterButtonWrapper} ${styles.leftCenterButtonWrapper}`}
-      >
-        <span
-          className={`${welcomeStyles.rightCenterNextText} ${styles.leftCenterPrevText}`}
+      {!showWisdomContainer && (
+        <div
+          ref={leftButtonRef}
+          className={`${welcomeStyles.rightCenterButtonWrapper} ${
+            styles.leftCenterButtonWrapper
+          } ${isModalOpen ? styles.hidden : ""}`}
         >
-          PREV
-        </span>
-        <img
-          src="/cross-icon.svg"
-          alt="Cross icon"
-          className={`${welcomeStyles.rightCenterCrossIcon} ${styles.leftCenterCrossIcon}`}
-        />
-        <img
-          src="/octagon-frame.svg"
-          alt="Octagon frame"
-          className={`${welcomeStyles.rightCenterButtonFrame} ${styles.leftCenterButtonFrame}`}
-        />
-        <img
-          src="/octagon-frame.svg"
-          alt="Octagon frame inner"
-          className={`${welcomeStyles.rightCenterButtonFrameInner} ${styles.leftCenterButtonFrameInner}`}
-        />
-        <button
-          className={`${welcomeStyles.navButton} ${welcomeStyles.rightCenterButton} ${styles.leftCenterButton}`}
-          onClick={handlePrev}
-        >
-          <NavButtonLeft />
-        </button>
-      </div>
+          <span
+            className={`${welcomeStyles.rightCenterNextText} ${styles.leftCenterPrevText}`}
+          >
+            PREV
+          </span>
+          <img
+            src="/cross-icon.svg"
+            alt="Cross icon"
+            className={`${welcomeStyles.rightCenterCrossIcon} ${styles.leftCenterCrossIcon}`}
+          />
+          <img
+            src="/octagon-frame.svg"
+            alt="Octagon frame"
+            className={`${welcomeStyles.rightCenterButtonFrame} ${styles.leftCenterButtonFrame}`}
+          />
+          <img
+            src="/octagon-frame.svg"
+            alt="Octagon frame inner"
+            className={`${welcomeStyles.rightCenterButtonFrameInner} ${styles.leftCenterButtonFrameInner}`}
+          />
+          <button
+            className={`${welcomeStyles.navButton} ${welcomeStyles.rightCenterButton} ${styles.leftCenterButton}`}
+            onClick={handlePrev}
+          >
+            <NavButtonLeft />
+          </button>
+        </div>
+      )}
 
       {/* Right center - NEXT button */}
-      <div className={welcomeStyles.rightCenterButtonWrapper}>
-        <span className={welcomeStyles.rightCenterNextText}>NEXT</span>
-        <img
-          src="/cross-icon.svg"
-          alt="Cross icon"
-          className={welcomeStyles.rightCenterCrossIcon}
-        />
-        <img
-          src="/octagon-frame.svg"
-          alt="Octagon frame"
-          className={welcomeStyles.rightCenterButtonFrame}
-        />
-        <img
-          src="/octagon-frame.svg"
-          alt="Octagon frame inner"
-          className={welcomeStyles.rightCenterButtonFrameInner}
-        />
-        <button
-          className={`${welcomeStyles.navButton} ${welcomeStyles.rightCenterButton}`}
-          onClick={handleNext}
+      {!showWisdomContainer && (
+        <div
+          ref={rightButtonRef}
+          className={`${welcomeStyles.rightCenterButtonWrapper} ${
+            isModalOpen ? styles.hidden : ""
+          }`}
         >
-          <NavButtonRight />
-        </button>
-      </div>
+          <span className={welcomeStyles.rightCenterNextText}>NEXT</span>
+          <img
+            src="/cross-icon.svg"
+            alt="Cross icon"
+            className={welcomeStyles.rightCenterCrossIcon}
+          />
+          <img
+            src="/octagon-frame.svg"
+            alt="Octagon frame"
+            className={welcomeStyles.rightCenterButtonFrame}
+          />
+          <img
+            src="/octagon-frame.svg"
+            alt="Octagon frame inner"
+            className={welcomeStyles.rightCenterButtonFrameInner}
+          />
+          <button
+            className={`${welcomeStyles.navButton} ${welcomeStyles.rightCenterButton}`}
+            onClick={handleNext}
+          >
+            <NavButtonRight />
+          </button>
+        </div>
+      )}
 
       {/* Center - Watch buttons */}
-      <div className={styles.watchButtonsContainer}>
+      <div
+        ref={watchButtonsRef}
+        className={`${styles.watchButtonsContainer} ${
+          isModalOpen ? styles.hidden : ""
+        }`}
+      >
         {[1, 2, 3].map((index) => {
           const isCurrentlyOpen =
             isModalOpen && selectedQuote && selectedQuote.id === index;
@@ -281,7 +415,7 @@ function InspirationGarden() {
                       />
                     </svg>
                   )}
-                  <span className={styles.watchText}>WATCH</span>
+                  <span className={styles.watchText}>READ</span>
                 </div>
               </button>
               <button
@@ -312,24 +446,40 @@ function InspirationGarden() {
       />
 
       {/* Bottom center - Title and Text */}
-      <div className={`${welcomeStyles.welcomeCenter} ${styles.bottomCenter}`}>
-        <div className={welcomeStyles.welcomeLogo}>
-          <div className={welcomeStyles.welcomeLogoLine}>INSPIRATION</div>
-          <div
-            className={`${welcomeStyles.welcomeLogoLine} ${welcomeStyles.welcomeLogoLineSerif}`}
-          >
-            GARDEN
+      {!showWisdomContainer && (
+        <div
+          ref={bottomCenterRef}
+          className={`${welcomeStyles.welcomeCenter} ${styles.bottomCenter} ${
+            isModalOpen ? styles.hidden : ""
+          }`}
+        >
+          <div className={welcomeStyles.welcomeLogo}>
+            <div className={welcomeStyles.welcomeLogoLine}>INSPIRATION</div>
+            <div
+              className={`${welcomeStyles.welcomeLogoLine} ${welcomeStyles.welcomeLogoLineSerif}`}
+            >
+              GARDEN
+            </div>
           </div>
+          <div className={welcomeStyles.welcomeText}>
+            <span className={welcomeStyles.welcomeLabel}>
+              where ingenuity overflows
+            </span>
+          </div>
+          <img
+            src="/cross-icon.svg"
+            alt="Cross icon"
+            className={welcomeStyles.welcomeCrossIcon}
+          />
         </div>
-        <div className={welcomeStyles.welcomeText}>
-          <span className={welcomeStyles.welcomeLabel}>
-            where ingenuity overflows
-          </span>
-        </div>
-      </div>
+      )}
 
       {/* Bottom footer */}
-      <div className={welcomeStyles.bottomFooter}>
+      <div
+        className={`${welcomeStyles.bottomFooter} ${
+          isModalOpen ? styles.hidden : ""
+        }`}
+      >
         <div className={welcomeStyles.footerFrame}>
           <div className={welcomeStyles.footerLogos}>
             <img

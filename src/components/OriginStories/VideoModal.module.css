@@ -396,10 +396,11 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 5rem 5rem;
+  padding: 6rem 4rem;
   z-index: 4;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  font-family: "Gill Sans", Helvetica, Arial, sans-serif;
 }
 
 .nameContainer {
@@ -409,60 +410,74 @@
 
 .firstName {
   font-family: "Gill Sans", Helvetica, Arial, sans-serif;
+  font-weight: 600;
   font-size: 1.5rem;
-  font-weight: 400;
+  max-width: 20rem;
   line-height: 1;
+  position: relative;
   color: var(--color-white);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  position: relative;
 }
 
 .lastName {
   font-family: Domaine, "Times New Roman", Georgia, serif;
-  font-size: 1.5rem;
   font-weight: 400;
+  position: relative;
+  font-size: 1.5rem;
   line-height: 1;
   color: var(--color-white);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  position: relative;
   margin-top: 0.1em;
 }
 
 .role {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
-  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+  font-family: "Gill Sans", Helvetica, Arial, sans-serif;
   font-weight: 400;
+  position: relative;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin-top: 0.65rem;
   color: var(--color-white);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+}
+
+@media (min-width: 1250px) {
+  .role {
+    margin-top: 0.85rem;
+  }
 }
 
 .quote {
+  font-family: "Modern Wakandan", sans-serif;
+  font-weight: 700;
   position: relative;
-  color: rgb(45, 248, 114);
-  font-size: 0.875rem;
-  line-height: 1.57143;
+  color: #2df872;
+  letter-spacing: 0.8em;
+  height: 0.5em;
+  line-height: 0.5em;
+  font-size: 0.5rem;
+  text-shadow: 0 0 var(--shadow-width-1) var(--shadow-color-1),
+    0 0 var(--shadow-width-2) var(--shadow-color-2);
+  margin-top: 1rem;
+  margin-bottom: 0.2rem;
   text-transform: none;
-  margin-top: 0.65rem;
 }
 
 .diagonalLine {
   position: absolute;
-  top: 170px;
+  top: 200px;
   left: -20px;
   width: 200px;
   height: 2px;
-  rotate: 90deg;
   background: linear-gradient(
     to right,
     #99ff88 0%,
     rgba(153, 255, 136, 0) 100%
   );
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
   transform-origin: left center;
 }
 

@@ -427,12 +427,20 @@ function VideoModal({ isOpen, onClose, story }) {
             {/* Text overlay - bottom left - hidden when video is playing */}
             {!isPlaying && (
               <div className={styles.textOverlay}>
-                <div className={styles.nameContainer}>
-                  <div className={styles.firstName}>{story.firstName}</div>
-                  <div className={styles.lastName}>{story.lastName}</div>
-                </div>
-                <div className={styles.role}>{story.role}</div>
-                <div className={styles.quote}>{story.quote}</div>
+                {story.firstName && (
+                  <div className={styles.nameContainer}>
+                    <div className={styles.firstName}>{story.firstName}</div>
+                    {story.lastName && (
+                      <div className={styles.lastName}>{story.lastName}</div>
+                    )}
+                  </div>
+                )}
+                {story.role && (
+                  <div className={styles.role}>{story.role}</div>
+                )}
+                {story.quote && (
+                  <div className={styles.quote}>{story.quote}</div>
+                )}
                 <div className={styles.diagonalLine}></div>
               </div>
             )}

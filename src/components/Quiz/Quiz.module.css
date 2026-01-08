@@ -4,181 +4,189 @@
   padding: var(--spacing-xl) 0;
   position: relative;
   background-color: var(--color-black);
+}
+
+/* Watch buttons container */
+.watchButtonsContainer {
+  position: absolute;
+  top: calc(50% - 100px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 0;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.watchButtonWrapper {
+  position: relative;
+}
+
+.watchButton {
+  position: relative;
+  width: 147px;
+  height: 67px;
+  background: transparent;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  padding: 0;
+  clip-path: path(
+    "M6.17157 44.1716L13.3284 51.3284C14.0786 52.0786 15.096 52.5 16.1569 52.5H138C140.209 52.5 142 50.7091 142 48.5V45V16.1569C142 15.096 141.579 14.0786 140.828 13.3284L133.672 6.17157C132.921 5.42143 131.904 5 130.843 5H9C6.79086 5 5 6.79086 5 9V12.5V41.3431C5 42.404 5.42143 43.4214 6.17157 44.1716Z"
+  );
+  transition: background-color 0.3s ease;
+  z-index: 0;
+  pointer-events: auto;
+}
+
+.watchButton:hover:not(.watchButtonActive):not([data-active="true"]) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.watchButton.watchButtonActive,
+.watchButton[data-active="true"] {
+  background-color: rgba(153, 255, 136, 0.3) !important;
+}
+
+.watchButton.watchButtonActive:hover,
+.watchButton[data-active="true"]:hover {
+  background-color: rgba(153, 255, 136, 0.4) !important;
+}
+
+/* Background layer for active state */
+.watchButtonBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(153, 255, 136, 0.3);
+  z-index: 0;
+  clip-path: inherit;
+  pointer-events: none;
+}
+
+.markerLabel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.playIconWrapper {
+  position: absolute;
+  bottom: -65px;
+  left: -82px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
-  width: 100%;
-}
-
-.title {
-  font-family: var(--font-display);
-  font-size: 4rem;
-  font-weight: 700;
-  color: var(--color-white);
-  text-align: center;
-  margin-bottom: var(--spacing-lg);
-}
-
-.progressBar {
-  width: 100%;
-  height: 4px;
-  background-color: var(--color-section-bg);
-  border-radius: 2px;
-  margin-bottom: var(--spacing-lg);
-  overflow: hidden;
-}
-
-.progressFill {
-  height: 100%;
-  background-color: var(--color-gold);
-  transition: width var(--transition-normal);
-}
-
-.questionContainer {
-  text-align: center;
-}
-
-.questionNumber {
-  font-size: 1rem;
-  color: var(--color-gold);
-  margin-bottom: var(--spacing-sm);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.questionText {
-  font-size: 2rem;
-  color: var(--color-white);
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.4;
-}
-
-.optionsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-}
-
-.optionCard {
-  padding: var(--spacing-md);
-  background-color: var(--color-section-bg);
-  border: 2px solid transparent;
-  border-radius: 8px;
-  color: var(--color-white);
-  font-size: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-}
-
-.optionCard:hover {
-  border-color: var(--color-gold);
-  transform: translateY(-2px);
-}
-
-.optionCard.selected {
-  border-color: var(--color-gold);
-  background-color: rgba(212, 175, 55, 0.1);
-}
-
-.navigation {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--spacing-md);
-}
-
-.navButton {
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: var(--color-section-bg);
-  border: 2px solid var(--color-white);
-  border-radius: 8px;
-  color: var(--color-white);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-}
-
-.navButton:hover:not(:disabled) {
-  background-color: var(--color-white);
-  color: var(--color-black);
-}
-
-.navButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.resultContent {
-  text-align: center;
-}
-
-.resultText {
-  font-size: 1.5rem;
-  color: var(--color-white);
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.6;
-}
-
-.restartButton {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  background-color: var(--color-gold);
+  background: transparent;
   border: none;
-  border-radius: 8px;
-  color: var(--color-black);
-  font-size: 1.25rem;
-  font-weight: 700;
   cursor: pointer;
-  transition: all var(--transition-normal);
+  padding: 0;
+  z-index: 1002;
+  transition: transform 0.3s ease;
 }
 
-.restartButton:hover {
-  background-color: var(--color-white);
-  transform: scale(1.05);
+.playIconWrapper:hover {
+  transform: scale(1.1);
 }
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 2.5rem;
-  }
-  
-  .questionText {
-    font-size: 1.5rem;
-  }
-  
-  .optionsGrid {
-    grid-template-columns: 1fr;
-  }
-  
-  .resultText {
-    font-size: 1.25rem;
-  }
+.playIconWrapper:hover ~ .watchButton,
+.watchButtonWrapper:hover .watchButton {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-@media (max-width: 480px) {
-  .title {
-    font-size: 2rem;
-  }
-  
-  .questionText {
-    font-size: 1.25rem;
-  }
-  
-  .optionCard {
-    font-size: 1rem;
-  }
-  
-  .resultText {
-    font-size: 1rem;
-  }
+.playIconHexagon {
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  color: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+}
+
+.playIcon {
+  position: relative;
+  width: 36px;
+  height: 42px;
+  z-index: 2;
+  filter: drop-shadow(0 0 0.1875rem rgba(255, 255, 255, 1))
+    drop-shadow(0 0 0.3125rem rgba(255, 255, 255, 1))
+    drop-shadow(0 0 0.5rem rgba(255, 255, 255, 0.7));
+}
+
+.playIconLine {
+  position: absolute;
+  bottom: -35px;
+  left: -53px;
+  width: 1px;
+  height: 95px;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 9;
+  transform-origin: bottom;
+  transform: rotate(-310deg);
+}
+
+.watchButtonContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  height: 100%;
+  width: 100%;
+  padding-left: 7px;
+  padding-bottom: 0.5rem;
+}
+
+.watchEyeIcon {
+  width: 35px;
+  height: 32px;
+  color: #ffffff;
+}
+
+.watchCheckIcon {
+  width: 35px;
+  height: 32px;
+  color: #99ff88;
+  filter: drop-shadow(0 0 4px rgba(153, 255, 136, 0.8))
+    drop-shadow(0 0 8px rgba(153, 255, 136, 0.6))
+    drop-shadow(0 0 12px rgba(153, 255, 136, 0.4));
+}
+
+.watchText {
+  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  line-height: 1.27273;
+  text-align: center;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* Top logo - increased z-index */
+.topLogo {
+  z-index: 1001 !important;
+}
+
+/* Bottom footer - increased z-index */
+.bottomFooter {
+  z-index: 1001 !important;
+  margin-bottom: 30px;
 }
 
 /* Bottom center text */
@@ -218,3 +226,10 @@
   opacity: 0.15;
 }
 
+/* Hide navigation buttons when modal is open */
+.hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}

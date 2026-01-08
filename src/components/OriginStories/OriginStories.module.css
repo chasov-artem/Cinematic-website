@@ -281,7 +281,7 @@
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
-  align-items: stretch;
+  align-items: center;
   gap: var(--spacing-sm);
   position: relative;
 }
@@ -295,8 +295,8 @@
 .footerDivider {
   width: 1px;
   background-color: rgba(255, 255, 255, 0.2);
-  align-self: stretch;
-  margin: calc(var(--spacing-xs) * -1) 0;
+  align-self: center;
+  height: 16px;
 }
 
 .footerLogo {
@@ -307,7 +307,12 @@
 .footerText {
   font-size: 0.65rem;
   color: var(--color-white);
-  opacity: 0.8;
+  opacity: 0.6;
   margin: 0;
   white-space: nowrap;
+  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
 }

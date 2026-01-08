@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./styles/globals.css";
 import HeroSection from "./components/HeroSection/HeroSection";
 import WelcomeSection from "./components/WelcomeSection/WelcomeSection";
@@ -9,6 +11,18 @@ import Quiz from "./components/Quiz/Quiz";
 import Footer from "./components/Footer/Footer";
 
 function App() {
+  // Оновлюємо ScrollTrigger при зміні розміру вікна
+  useEffect(() => {
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div className="app">
       {/* Hero Section */}

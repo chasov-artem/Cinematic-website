@@ -1,10 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./WelcomeSection.module.css";
 import SphereIcon from "./SphereIcon";
 import NavButtonLeft from "./NavButtonLeft";
 import NavButtonRight from "./NavButtonRight";
 
+gsap.registerPlugin(ScrollTrigger);
+
 function WelcomeSection() {
+  const sectionRef = useRef(null);
+  const wisdomContainerRef = useRef(null);
+  const wisdomLabelRef = useRef(null);
+  const welcomeCenterRef = useRef(null);
+  const tutorialPanelRef = useRef(null);
+  const rightTopButtonRef = useRef(null);
+  const rightCenterButtonRef = useRef(null);
+
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [journeyStarted, setJourneyStarted] = useState(false);
 
@@ -12,6 +24,137 @@ function WelcomeSection() {
     "You have entered the Hall of Zero Limits. Great things lie ahead for all who open themselves to finding their gift.",
     "This is an ever-changing space for creativity\nand growth. Here, you will find new insights and\ntools to help inspire you. After all, inspiration is\nthe water every gift needs to grow.",
   ];
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    // Анімація Wisdom Container
+    if (wisdomContainerRef.current) {
+      gsap.fromTo(
+        wisdomContainerRef.current,
+        { opacity: 0, x: -50, scale: 0.95 },
+        {
+          opacity: 1,
+          x: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Анімація Wisdom Label
+    if (wisdomLabelRef.current) {
+      gsap.fromTo(
+        wisdomLabelRef.current,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: "power3.out",
+          delay: 0.3,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Анімація Welcome Center (коли показується)
+    if (welcomeCenterRef.current) {
+      gsap.fromTo(
+        welcomeCenterRef.current,
+        { opacity: 0, y: 30, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 70%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Анімація Tutorial Panel
+    if (tutorialPanelRef.current) {
+      gsap.fromTo(
+        tutorialPanelRef.current,
+        { opacity: 0, scale: 0.95 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Анімація правої кнопки меню
+    if (rightTopButtonRef.current) {
+      gsap.fromTo(
+        rightTopButtonRef.current,
+        { opacity: 0, x: 30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Анімація правої центральної кнопки
+    if (rightCenterButtonRef.current) {
+      gsap.fromTo(
+        rightCenterButtonRef.current,
+        { opacity: 0, x: 30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: "power3.out",
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.vars?.trigger === section) {
+          trigger.kill();
+        }
+      });
+    };
+  }, [journeyStarted, currentTextIndex]);
 
   const handleNext = () => {
     setCurrentTextIndex((prev) => {
@@ -43,7 +186,7 @@ function WelcomeSection() {
   const showWisdomContainer = currentTextIndex < 2 && !journeyStarted;
 
   return (
-    <section className={styles.welcomeSection} id="welcome">
+    <section ref={sectionRef} className={styles.welcomeSection} id="welcome">
       {/* Top left logo */}
       <div className={styles.topLogo}>
         <img
@@ -55,8 +198,13 @@ function WelcomeSection() {
 
       {/* Main content container - Wisdom Guide */}
       {showWisdomContainer && (
-        <div className={styles.wisdomContainerWrapper}>
+        <div ref={wisdomContainerRef} className={styles.wisdomContainerWrapper}>
           <div className={styles.wisdomContainer}>
+            <img
+              src="/wisdom-guide-frame.svg"
+              alt=""
+              className={styles.wisdomContainerFrame}
+            />
             <div className={styles.sphereIcon}>
               <SphereIcon />
             </div>
@@ -93,7 +241,7 @@ function WelcomeSection() {
 
       {/* Left side - GUIDE WISDOM label */}
       {showWisdomContainer && (
-        <div className={styles.wisdomLabelContainer}>
+        <div ref={wisdomLabelRef} className={styles.wisdomLabelContainer}>
           <div className={styles.wisdomLine}></div>
           <div className={styles.wisdomLabel}>
             <span className={styles.wisdomLabelWord}>WISDOM</span>
@@ -125,7 +273,7 @@ function WelcomeSection() {
 
       {/* Tutorial Panel - показується коли showCenterElements */}
       {showCenterElements && (
-        <div className={styles.tutorialPanel}>
+        <div ref={tutorialPanelRef} className={styles.tutorialPanel}>
           <div className={styles.tutorialHeader}>TUTORIAL</div>
           <div className={styles.tutorialPanelLines}>
             <img
@@ -429,6 +577,24 @@ function WelcomeSection() {
                 fill="none"
               />
             </svg>
+            <svg
+              className={styles.beginJourneyLayerPath}
+              width="240"
+              height="60"
+              viewBox="0 0 240 60"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                className="button__layer__path"
+                d="M231,53.5H16.3c-0.5,0-1-0.2-1.4-0.6l-8.3-8.3C6.2,44.2,6,43.7,6,43.2V13.5V10c0-2.2,1.8-4,4-4h214.7 c0.5,0,1,0.2,1.4,0.6l8.3,8.3c0.4,0.4,0.6,0.9,0.6,1.4V46v3.5C235,51.7,233.2,53.5,231,53.5"
+                stroke="white"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray="12 7 38 13 210 25 300 300"
+                strokeDashoffset="0"
+              />
+            </svg>
             <span className={styles.beginJourneyText}>BEGIN JOURNEY</span>
             <svg
               className={styles.beginJourneyArrow}
@@ -464,31 +630,32 @@ function WelcomeSection() {
       )}
 
       {/* Bottom center - Welcome */}
-      <div className={styles.welcomeCenter}>
-        <div className={styles.welcomeLogo}>
-          <div className={styles.welcomeLogoLine}>THE HALL OF</div>
-          <div
-            className={`${styles.welcomeLogoLine} ${styles.welcomeLogoLineSerif}`}
-          >
-            ZERO LIMITS
-          </div>
-        </div>
-        <div className={styles.welcomeText}>
-          <span className={styles.welcomeLabel}>WELCOME</span>
-          {showCenterElements && (
-            <div className={styles.crosshairIndicator}>
-              <div className={styles.crosshairHorizontal}></div>
-              <div className={styles.crosshairVertical}></div>
+      {!showWisdomContainer && !showCenterElements && (
+        <div ref={welcomeCenterRef} className={styles.welcomeCenter}>
+          <div className={styles.welcomeLogo}>
+            <div className={styles.welcomeLogoLine}>THE HALL OF</div>
+            <div
+              className={`${styles.welcomeLogoLine} ${styles.welcomeLogoLineSerif}`}
+            >
+              ZERO LIMITS
             </div>
-          )}
+          </div>
+          <div className={styles.welcomeText}>
+            <span className={styles.welcomeLabel}>WELCOME</span>
+          </div>
+          <img
+            src="/cross-icon.svg"
+            alt="Cross icon"
+            className={styles.welcomeCrossIcon}
+          />
         </div>
-      </div>
+      )}
 
       {/* Right side elements - показуються після натискання кнопки */}
       {journeyStarted && (
         <>
           {/* Top right - Menu button */}
-          <button className={styles.rightTopButton}>
+          <button ref={rightTopButtonRef} className={styles.rightTopButton}>
             <svg
               width="33"
               height="28"
@@ -504,7 +671,10 @@ function WelcomeSection() {
           </button>
 
           {/* Center right - Arrow button */}
-          <div className={styles.rightCenterButtonWrapper}>
+          <div
+            ref={rightCenterButtonRef}
+            className={styles.rightCenterButtonWrapper}
+          >
             <span className={styles.rightCenterNextText}>NEXT</span>
             <img
               src="/cross-icon.svg"

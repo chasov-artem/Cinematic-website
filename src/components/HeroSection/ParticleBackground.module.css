@@ -1,0 +1,39 @@
+.particleCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  will-change: contents;
+  opacity: 1; /* Збільшуємо для кращої видимості */
+  /* mix-blend-mode: screen; */ /* Тимчасово вимикаємо для перевірки */
+  transform: translateZ(0); /* Апаратне прискорення */
+  backface-visibility: hidden; /* Оптимізація рендерингу */
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  display: block; /* Забезпечуємо правильне відображення */
+}
+
+/* Додаємо легкий blur для кінематографічного ефекту */
+@supports (backdrop-filter: blur(1px)) {
+  .particleCanvas {
+    backdrop-filter: blur(0.5px);
+  }
+}
+
+/* Оптимізація продуктивності */
+@media (prefers-reduced-motion: reduce) {
+  .particleCanvas {
+    opacity: 0.3;
+    animation: none;
+  }
+}
+
+/* На мобільних пристроях зменшуємо прозорість для продуктивності */
+@media (max-width: 768px) {
+  .particleCanvas {
+    opacity: 0.4;
+  }
+}
