@@ -90,7 +90,7 @@ function VideoModal({ isOpen, onClose, story }) {
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
           if (error.name !== "AbortError" && error.name !== "NotAllowedError") {
-            console.error("Error playing video:", error);
+            // Error playing video
           }
         });
       }

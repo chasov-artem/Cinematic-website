@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BsHexagon } from "react-icons/bs";
 import { AiOutlineCheck } from "react-icons/ai";
+import { useMenu } from "../../contexts/MenuContext";
 import NavButtonRight from "../WelcomeSection/NavButtonRight";
 import NavButtonLeft from "../WelcomeSection/NavButtonLeft";
 import VideoModal from "../OriginStories/VideoModal";
@@ -13,6 +14,7 @@ import { addSectionScrollAnimations } from "../../utils/sectionScrollAnimations"
 gsap.registerPlugin(ScrollTrigger);
 
 function SpriteZero() {
+  const { openMenu, markSectionCompleted } = useMenu();
   const sectionRef = useRef(null);
   const topLogoRef = useRef(null);
   const topButtonRef = useRef(null);
@@ -43,6 +45,7 @@ function SpriteZero() {
   const handleCloseModal = () => {
     if (videoStory) {
       setWatchedVideo(true);
+      markSectionCompleted("sprite-zero", true);
     }
     setIsModalOpen(false);
   };
@@ -89,7 +92,11 @@ function SpriteZero() {
       </div>
 
       {/* Top right - Menu button */}
-      <button ref={topButtonRef} className={welcomeStyles.rightTopButton}>
+      <button
+        ref={topButtonRef}
+        className={welcomeStyles.rightTopButton}
+        onClick={openMenu}
+      >
         <svg
           width="33"
           height="28"
@@ -190,6 +197,7 @@ function SpriteZero() {
                 src="/marker-label.svg"
                 alt="Marker label"
                 className={styles.markerLabel}
+                loading="lazy"
               />
               <div className={styles.watchButtonContent}>
                 {watchedVideo ? (
@@ -301,6 +309,7 @@ function SpriteZero() {
                 src="/play-icon.svg"
                 alt="Play icon"
                 className={styles.playIcon}
+                loading="lazy"
               />
             </button>
             <div className={styles.playIconLine}></div>
@@ -337,6 +346,7 @@ function SpriteZero() {
           src="/cross-icon.svg"
           alt="Cross icon"
           className={welcomeStyles.welcomeCrossIcon}
+          loading="lazy"
         />
       </div>
 

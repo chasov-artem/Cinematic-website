@@ -3,16 +3,19 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BsHexagon } from "react-icons/bs";
 import { AiOutlineCheck } from "react-icons/ai";
+import { useMenu } from "../../contexts/MenuContext";
 import StoryCard from "../StoryCard/StoryCard";
 import NavButtonLeft from "../WelcomeSection/NavButtonLeft";
 import NavButtonRight from "../WelcomeSection/NavButtonRight";
 import VideoModal from "./VideoModal";
 import styles from "./OriginStories.module.css";
 import welcomeStyles from "../WelcomeSection/WelcomeSection.module.css";
+import { createParallaxEffect } from "../../utils/parallaxEffects";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function OriginStories() {
+  const { openMenu, markSectionCompleted } = useMenu();
   const sectionRef = useRef(null);
   const watchButtonsRef = useRef(null);
   const welcomeCenterRef = useRef(null);
@@ -99,7 +102,14 @@ function OriginStories() {
   const handleCloseModal = () => {
     // Додаємо історію до переглянутих перед закриттям
     if (selectedStory) {
-      setWatchedStories((prev) => new Set([...prev, selectedStory.id]));
+      setWatchedStories((prev) => {
+        const newWatched = new Set([...prev, selectedStory.id]);
+        // Перевіряємо, чи всі 3 історії переглянуті
+        if (newWatched.size === 3) {
+          markSectionCompleted("origin-stories", true);
+        }
+        return newWatched;
+      });
     }
     setIsModalOpen(false);
     setSelectedStory(null);
@@ -232,12 +242,43 @@ function OriginStories() {
       );
     }
 
+    // Паралакс ефекти через RAF
+    const parallaxCleanups = [];
+
+    // Паралакс для Watch Buttons
+    if (watchButtonsRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(watchButtonsRef.current, {
+          speed: -0.2,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
+    // Паралакс для Welcome Center
+    if (welcomeCenterRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(welcomeCenterRef.current, {
+          speed: -0.15,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => {
         if (trigger.vars?.trigger === section) {
           trigger.kill();
         }
       });
+      // Очищаємо паралакс ефекти
+      parallaxCleanups.forEach((cleanup) => cleanup());
     };
   }, []);
 
@@ -263,6 +304,7 @@ function OriginStories() {
       <button
         ref={topButtonRef}
         className={`${welcomeStyles.rightTopButton} ${styles.topButton}`}
+        onClick={openMenu}
       >
         <svg
           width="33"
@@ -370,6 +412,7 @@ function OriginStories() {
                   src="/marker-label.svg"
                   alt="Marker label"
                   className={styles.markerLabel}
+                  loading="lazy"
                 />
                 <div className={styles.watchButtonContent}>
                   {isActive ? (
@@ -481,6 +524,7 @@ function OriginStories() {
                   src="/play-icon.svg"
                   alt="Play icon"
                   className={styles.playIcon}
+                  loading="lazy"
                 />
               </button>
               <div className={styles.playIconLine}></div>
@@ -511,6 +555,7 @@ function OriginStories() {
           src="/cross-icon.svg"
           alt="Cross icon"
           className={welcomeStyles.welcomeCrossIcon}
+          loading="lazy"
         />
       </div>
 

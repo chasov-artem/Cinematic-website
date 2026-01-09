@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { gsap } from "gsap";
 import { IoIosClose } from "react-icons/io";
 import { FaTwitter } from "react-icons/fa";
 import NavButtonLeft from "../WelcomeSection/NavButtonLeft";
 import welcomeStyles from "../WelcomeSection/WelcomeSection.module.css";
+import heroStyles from "../HeroSection/HeroSection.module.css";
+import menuStyles from "../MenuModal/MenuModal.module.css";
 import styles from "./QuizModal.module.css";
 
 // Заглушка питань - потім можна винести в окремий файл
@@ -57,17 +60,106 @@ const questions = [
   },
 ];
 
-function QuizModal({ isOpen, onClose }) {
+const QuizModal = ({ isOpen, onClose }) => {
   const [isQuizStarted, setIsQuizStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [answers, setAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const resultsContentRef = useRef(null);
+  const optionsContainerRef = useRef(null);
+  const questionHeaderRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
+      // Блокуємо скрол на body
       document.body.style.overflow = "hidden";
+      // Також блокуємо скрол на html для надійності
+      document.documentElement.style.overflow = "hidden";
+      
+      // Блокуємо скрол події на document з високим пріоритетом (capture phase)
+      // Це перехоплює події до того, як їх обробить Lenis
+      const handleDocumentWheel = (e) => {
+        // Перевіряємо, чи подія відбулася всередині resultsContent
+        const resultsContent = resultsContentRef.current;
+        if (!resultsContent) {
+          // Якщо resultsContent не існує, блокуємо всі події
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          return false;
+        }
+        
+        // Перевіряємо, чи подія всередині resultsContent
+        let element = e.target;
+        let isInsideResults = false;
+        
+        while (element && element !== document.body) {
+          if (element === resultsContent) {
+            isInsideResults = true;
+            break;
+          }
+          element = element.parentElement;
+        }
+        
+        // Блокуємо скрол, якщо не всередині resultsContent
+        if (!isInsideResults) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          return false;
+        }
+      };
+      
+      const handleDocumentTouchMove = (e) => {
+        // Перевіряємо, чи подія відбулася всередині resultsContent
+        const resultsContent = resultsContentRef.current;
+        if (!resultsContent) {
+          // Якщо resultsContent не існує, блокуємо всі події
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          return false;
+        }
+        
+        // Перевіряємо, чи подія всередині resultsContent
+        let element = e.target;
+        let isInsideResults = false;
+        
+        while (element && element !== document.body) {
+          if (element === resultsContent) {
+            isInsideResults = true;
+            break;
+          }
+          element = element.parentElement;
+        }
+        
+        // Блокуємо скрол, якщо не всередині resultsContent
+        if (!isInsideResults) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          return false;
+        }
+      };
+      
+      // Додаємо обробники на document з capture: true для перехоплення до Lenis
+      document.addEventListener('wheel', handleDocumentWheel, { passive: false, capture: true });
+      document.addEventListener('touchmove', handleDocumentTouchMove, { passive: false, capture: true });
+      // Також на window для надійності
+      window.addEventListener('wheel', handleDocumentWheel, { passive: false, capture: true });
+      window.addEventListener('touchmove', handleDocumentTouchMove, { passive: false, capture: true });
+      
+      return () => {
+        document.removeEventListener('wheel', handleDocumentWheel, { capture: true });
+        document.removeEventListener('touchmove', handleDocumentTouchMove, { capture: true });
+        window.removeEventListener('wheel', handleDocumentWheel, { capture: true });
+        window.removeEventListener('touchmove', handleDocumentTouchMove, { capture: true });
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+      };
     } else {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
       setIsQuizStarted(false);
       setCurrentQuestion(1);
       setAnswers([]);
@@ -75,10 +167,78 @@ function QuizModal({ isOpen, onClose }) {
     }
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  // Знаходимо поточне питання
+  const currentQ = questions.find((q) => q.id === currentQuestion);
+
+  // Анімація появи карток при зміні питання
+  useEffect(() => {
+    if (!isQuizStarted || showResults || !currentQ) return;
+
+    // Анімація заголовка питання - поява зверху з fade
+    if (questionHeaderRef.current) {
+      gsap.fromTo(
+        questionHeaderRef.current,
+        { opacity: 0, y: -50, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          ease: "power3.out",
+        }
+      );
+    }
+
+    // Анімація карток - поява з боків з обертанням
+    if (optionsContainerRef.current) {
+      const optionButtons = optionsContainerRef.current.querySelectorAll(
+        `.${styles.optionButton}`
+      );
+
+      // Встановлюємо початкові позиції для кожної картки
+      optionButtons.forEach((button, index) => {
+        // Перша картка зліва, друга справа
+        const isLeft = index === 0;
+        gsap.set(button, {
+          opacity: 0,
+          x: isLeft ? -200 : 200,
+          y: 50,
+          rotation: isLeft ? -15 : 15,
+          scale: 0.8,
+        });
+      });
+
+      // Анімуємо появу карток одночасно з різних боків
+      gsap.to(optionButtons, {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scale: 1,
+        duration: 1,
+        ease: "power3.out",
+        stagger: 0.1, // Невелика затримка між картками
+        delay: 0.3, // Затримка після заголовка
+      });
+    }
+
+    return () => {
+      // Очищаємо анімації при розмонтуванні
+      if (optionsContainerRef.current) {
+        const optionButtons = optionsContainerRef.current.querySelectorAll(
+          `.${styles.optionButton}`
+        );
+        gsap.killTweensOf(optionButtons);
+      }
+      if (questionHeaderRef.current) {
+        gsap.killTweensOf(questionHeaderRef.current);
+      }
+    };
+  }, [currentQuestion, isQuizStarted, showResults, currentQ]);
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -86,9 +246,45 @@ function QuizModal({ isOpen, onClose }) {
     }
   };
 
-  const handleOptionClick = (optionId) => {
-    const currentQ = questions.find((q) => q.id === currentQuestion);
+  // Дозволяємо скрол всередині resultsContent
+  const handleResultsContentWheel = (e) => {
+    // Дозволяємо скрол всередині resultsContent
+    e.stopPropagation();
+  };
+  
+  const handleResultsContentTouchMove = (e) => {
+    // Дозволяємо скрол всередині resultsContent
+    e.stopPropagation();
+  };
+
+  const handleOptionClick = (optionId, event) => {
     if (!currentQ) return;
+
+    // Анімація вибору картки - пульсація та підсвітка
+    const clickedButton = event.currentTarget;
+    if (clickedButton) {
+      // Створюємо timeline для послідовних анімацій
+      const tl = gsap.timeline();
+      
+      // Пульсація при натисканні
+      tl.to(clickedButton, {
+        scale: 1.05,
+        duration: 0.15,
+        ease: "power2.out",
+      })
+      .to(clickedButton, {
+        scale: 1,
+        duration: 0.15,
+        ease: "power2.in",
+      });
+
+      // Підсвітка обраної картки
+      gsap.to(clickedButton, {
+        filter: "brightness(1.3) drop-shadow(0 0 12px rgba(153, 255, 136, 1))",
+        duration: 0.3,
+        ease: "power2.out",
+      });
+    }
 
     // Зберігаємо відповідь
     const newAnswer = {
@@ -97,16 +293,59 @@ function QuizModal({ isOpen, onClose }) {
     };
     setAnswers([...answers, newAnswer]);
 
+    // Анімація зникнення - картки роз'їжджаються в сторони
+    if (optionsContainerRef.current) {
+      const optionButtons = optionsContainerRef.current.querySelectorAll(
+        `.${styles.optionButton}`
+      );
+      
+      optionButtons.forEach((button, index) => {
+        const isLeft = index === 0;
+        const isClicked = button === clickedButton;
+        
+        if (isClicked) {
+          // Обрана картка збільшується і зникає
+          gsap.to(button, {
+            scale: 1.1,
+            opacity: 0,
+            duration: 0.4,
+            ease: "power2.in",
+          });
+        } else {
+          // Інша картка від'їжджає вбік
+          gsap.to(button, {
+            x: isLeft ? -300 : 300,
+            opacity: 0,
+            rotation: isLeft ? -20 : 20,
+            scale: 0.8,
+            duration: 0.4,
+            ease: "power2.in",
+          });
+        }
+      });
+
+      // Анімація зникнення заголовка
+      if (questionHeaderRef.current) {
+        gsap.to(questionHeaderRef.current, {
+          opacity: 0,
+          y: -30,
+          scale: 0.9,
+          duration: 0.4,
+          ease: "power2.in",
+        });
+      }
+    }
+
     // Переходимо до наступного питання
     if (currentQuestion < questions.length) {
       setTimeout(() => {
         setCurrentQuestion(currentQuestion + 1);
-      }, 300);
+      }, 500);
     } else {
       // Квіз завершено - показуємо результати
       setTimeout(() => {
         setShowResults(true);
-      }, 300);
+      }, 500);
     }
   };
 
@@ -128,15 +367,19 @@ function QuizModal({ isOpen, onClose }) {
 
   const handleTakeQuizAgain = () => {
     setShowResults(false);
+    setIsQuizStarted(false);
     setCurrentQuestion(1);
     setAnswers([]);
-    // Повертаємося до першого питання квізу
+    // Повертаємося до початкового екрану квізу
   };
 
-  const currentQ = questions.find((q) => q.id === currentQuestion);
+  if (!isOpen) return null;
 
   return (
-    <div className={styles.modalOverlay} onClick={handleBackdropClick}>
+    <div 
+      className={styles.modalOverlay} 
+      onClick={handleBackdropClick}
+    >
       <div className={styles.modalContent}>
         {/* Border frame - only on start screen */}
         {!isQuizStarted && (
@@ -299,7 +542,12 @@ function QuizModal({ isOpen, onClose }) {
               </button>
             </div>
           ) : showResults ? (
-            <div className={styles.resultsContent}>
+            <div 
+              ref={resultsContentRef} 
+              className={styles.resultsContent}
+              onWheel={handleResultsContentWheel}
+              onTouchMove={handleResultsContentTouchMove}
+            >
               {/* Results Title */}
               <div className={styles.resultsTitle}>QUIZ RESULTS</div>
 
@@ -402,15 +650,15 @@ function QuizModal({ isOpen, onClose }) {
                   </svg>
                 </div>
 
-                {/* Continue Button */}
+                {/* Continue Button - використовуємо стиль enterButton з HeroSection */}
                 <button
-                  className={styles.continueButton}
+                  className={`${heroStyles.enterButton} ${styles.continueButtonOverride}`}
                   onClick={handleContinue}
                 >
-                  <div className={styles.continueLineTop}></div>
-                  <div className={styles.continueLineBottom}></div>
+                  <div className={heroStyles.enterLineTop}></div>
+                  <div className={heroStyles.enterLineBottom}></div>
                   <svg
-                    className={styles.continueBorder}
+                    className={heroStyles.enterBorder}
                     width="240"
                     height="59"
                     viewBox="0 0 240 59"
@@ -426,7 +674,7 @@ function QuizModal({ isOpen, onClose }) {
                     />
                   </svg>
                   <svg
-                    className={styles.continueLayerPath}
+                    className={heroStyles.enterLayerPath}
                     width="240"
                     height="60"
                     viewBox="0 0 240 60"
@@ -443,9 +691,9 @@ function QuizModal({ isOpen, onClose }) {
                       strokeDashoffset="0"
                     />
                   </svg>
-                  <span className={styles.continueText}>CONTINUE</span>
+                  <span className={heroStyles.enterText}>CONTINUE</span>
                   <svg
-                    className={styles.continueArrow}
+                    className={heroStyles.enterArrow}
                     width="18"
                     height="13"
                     viewBox="0 0 18 13"
@@ -475,17 +723,15 @@ function QuizModal({ isOpen, onClose }) {
                   </svg>
                 </button>
 
-                {/* Take Quiz Again Link */}
+                {/* Take Quiz Again Link - використовуємо стиль close button з MenuModal */}
                 <button
-                  className={styles.takeQuizAgain}
+                  className={`${menuStyles.modalCloseButton} ${styles.takeQuizAgainOverride}`}
                   onClick={handleTakeQuizAgain}
                 >
-                  <span className={styles.takeQuizAgainText}>
-                    <span className={styles.takeQuizAgainWord}>TAKE</span>
-                    <span className={styles.takeQuizAgainWord}>THE QUIZ</span>
-                    <span className={styles.takeQuizAgainWord}>AGAIN</span>
-                    <span className={styles.takeQuizAgainLineLeft}></span>
-                    <span className={styles.takeQuizAgainLineRight}></span>
+                  <span className={menuStyles.closeText}>
+                    <span className={menuStyles.closeWord}>TAKE THE QUIZ AGAIN</span>
+                    <span className={menuStyles.closeLineLeft}></span>
+                    <span className={menuStyles.closeLineRight}></span>
                   </span>
                 </button>
               </div>
@@ -521,7 +767,7 @@ function QuizModal({ isOpen, onClose }) {
               )}
 
               {/* Question Header */}
-              <div className={styles.questionHeader}>
+              <div ref={questionHeaderRef} className={styles.questionHeader}>
                 <div className={styles.questionNumber}>
                   QUESTION {currentQuestion}
                 </div>
@@ -557,12 +803,12 @@ function QuizModal({ isOpen, onClose }) {
 
               {/* Options */}
               {currentQ && (
-                <div className={styles.optionsContainer}>
+                <div ref={optionsContainerRef} className={styles.optionsContainer}>
                   {currentQ.options.map((option) => (
                     <button
                       key={option.id}
                       className={styles.optionButton}
-                      onClick={() => handleOptionClick(option.id)}
+                      onClick={(e) => handleOptionClick(option.id, e)}
                     >
                       <img
                         src="/frame-border.svg"
@@ -608,6 +854,6 @@ function QuizModal({ isOpen, onClose }) {
       </div>
     </div>
   );
-}
+};
 
 export default QuizModal;

@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./HeroSection.module.css";
 import ParticleBackground from "./ParticleBackground";
+import { createParallaxEffect, createScaleParallax } from "../../utils/parallaxEffects";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -139,12 +140,69 @@ function HeroSection() {
       );
     }
 
+    // Паралакс ефекти через RAF
+    const parallaxCleanups = [];
+
+    // Паралакс для головного логотипу (повільніший)
+    if (heroLogoRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(heroLogoRef.current, {
+          speed: -0.3,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
+    // Паралакс для теглайну (середня швидкість)
+    if (taglineRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(taglineRef.current, {
+          speed: -0.2,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
+    // Паралакс для кнопки Enter (швидший)
+    if (enterButtonRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(enterButtonRef.current, {
+          speed: -0.15,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
+    // Паралакс для логотипів (дуже повільний)
+    if (logosRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(logosRef.current, {
+          speed: -0.1,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => {
         if (trigger.vars?.trigger === section) {
           trigger.kill();
         }
       });
+      // Очищаємо паралакс ефекти
+      parallaxCleanups.forEach((cleanup) => cleanup());
     };
   }, []);
 
@@ -156,7 +214,7 @@ function HeroSection() {
   };
 
   return (
-    <section ref={sectionRef} className={styles.heroSection}>
+    <section ref={sectionRef} className={styles.heroSection} id="hero">
       {/* Particle Background - заміна 3D анімації */}
       <ParticleBackground sectionRef={sectionRef} />
 
@@ -269,7 +327,11 @@ function HeroSection() {
         </p>
 
         {/* Enter button */}
-        <button ref={enterButtonRef} className={styles.enterButton} onClick={handleEnterClick}>
+        <button
+          ref={enterButtonRef}
+          className={styles.enterButton}
+          onClick={handleEnterClick}
+        >
           <div className={styles.enterLineTop}></div>
           <div className={styles.enterLineBottom}></div>
           <svg

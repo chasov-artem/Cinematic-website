@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BsHexagon } from "react-icons/bs";
 import { AiOutlineCheck } from "react-icons/ai";
+import { useMenu } from "../../contexts/MenuContext";
 import NavButtonRight from "../WelcomeSection/NavButtonRight";
 import NavButtonLeft from "../WelcomeSection/NavButtonLeft";
 import SphereIcon from "../WelcomeSection/SphereIcon";
@@ -10,10 +11,12 @@ import QuoteModal from "./QuoteModal";
 import welcomeStyles from "../WelcomeSection/WelcomeSection.module.css";
 import styles from "./InspirationGarden.module.css";
 import { addSectionScrollAnimations } from "../../utils/sectionScrollAnimations";
+import { createParallaxEffect } from "../../utils/parallaxEffects";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function InspirationGarden() {
+  const { openMenu, markSectionCompleted } = useMenu();
   const sectionRef = useRef(null);
   const topLogoRef = useRef(null);
   const topButtonRef = useRef(null);
@@ -22,6 +25,7 @@ function InspirationGarden() {
   const watchButtonsRef = useRef(null);
   const bottomCenterRef = useRef(null);
   const wisdomContainerRef = useRef(null);
+  const wisdomTextRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [watchedQuotes, setWatchedQuotes] = useState(new Set());
@@ -69,7 +73,14 @@ function InspirationGarden() {
 
   const handleCloseModal = () => {
     if (selectedQuote) {
-      setWatchedQuotes((prev) => new Set([...prev, selectedQuote.id]));
+      setWatchedQuotes((prev) => {
+        const newWatched = new Set([...prev, selectedQuote.id]);
+        // Перевіряємо, чи всі 3 цитати прочитані
+        if (newWatched.size === 3) {
+          markSectionCompleted("inspiration-garden", true);
+        }
+        return newWatched;
+      });
     }
     setIsModalOpen(false);
     setSelectedQuote(null);
@@ -101,11 +112,54 @@ function InspirationGarden() {
     }
   };
 
+  // Функція для анімації появи тексту по словах
+  const animateTextReveal = (textElement) => {
+    if (!textElement) return;
+
+    const words = textElement.querySelectorAll('[data-word]');
+    if (words.length === 0) return;
+
+    // Очищаємо попередні анімації
+    gsap.killTweensOf(words);
+
+    // Спочатку ховаємо всі слова
+    gsap.set(words, { opacity: 0, y: 20 });
+
+    // Анімуємо поступове з'явлення кожного слова
+    gsap.to(words, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      stagger: 0.08, // Затримка між словами
+    });
+  };
+
   const isFirstSlide = currentTextIndex === 0;
   const showWisdomContainer = currentTextIndex < 2;
 
+  // Ефект для анімації тексту при зміні індексу
   useEffect(() => {
-    return addSectionScrollAnimations(sectionRef, {
+    if (wisdomTextRef.current && showWisdomContainer && currentTextIndex < wisdomTexts.length) {
+      const textElement = wisdomTextRef.current;
+      // Невелика затримка, щоб DOM оновився
+      const timer = setTimeout(() => {
+        animateTextReveal(textElement);
+      }, 150);
+
+      return () => {
+        clearTimeout(timer);
+        // Очищаємо анімації при розмонтуванні
+        if (textElement) {
+          const words = textElement.querySelectorAll('[data-word]');
+          gsap.killTweensOf(words);
+        }
+      };
+    }
+  }, [currentTextIndex, showWisdomContainer, wisdomTexts.length]);
+
+  useEffect(() => {
+    const cleanupScrollAnimations = addSectionScrollAnimations(sectionRef, {
       topLogoRef,
       topButtonRef,
       leftButtonRef,
@@ -114,6 +168,56 @@ function InspirationGarden() {
       bottomCenterRef,
       wisdomContainerRef,
     });
+
+    // Паралакс ефекти через RAF
+    const parallaxCleanups = [];
+
+    // Паралакс для Watch Buttons
+    if (watchButtonsRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(watchButtonsRef.current, {
+          speed: -0.2,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
+    // Паралакс для Bottom Center
+    if (bottomCenterRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(bottomCenterRef.current, {
+          speed: -0.15,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
+    // Паралакс для Wisdom Container
+    if (wisdomContainerRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(wisdomContainerRef.current, {
+          speed: -0.2,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
+    return () => {
+      if (cleanupScrollAnimations) {
+        cleanupScrollAnimations();
+      }
+      // Очищаємо паралакс ефекти
+      parallaxCleanups.forEach((cleanup) => cleanup());
+    };
   }, [currentTextIndex]);
 
   return (
@@ -149,14 +253,30 @@ function InspirationGarden() {
               src="/wisdom-guide-frame.svg"
               alt=""
               className={welcomeStyles.wisdomContainerFrame}
+              loading="lazy"
             />
             <div className={welcomeStyles.sphereIcon}>
               <SphereIcon />
             </div>
             <div className={welcomeStyles.wisdomContent}>
-              <div className={welcomeStyles.wisdomText}>
+              <div className={welcomeStyles.wisdomText} ref={wisdomTextRef}>
                 <p style={{ whiteSpace: "pre-line" }}>
-                  {wisdomTexts[currentTextIndex] || ""}
+                  {wisdomTexts[currentTextIndex] && wisdomTexts[currentTextIndex].split(/(\s+|\n)/).map((segment, index) => {
+                    // Обробляємо переноси рядків
+                    if (segment === '\n') {
+                      return <br key={index} />;
+                    }
+                    // Пробіли залишаємо як є
+                    if (segment.trim() === '') {
+                      return <span key={index} className={welcomeStyles.wisdomWord} style={{ display: 'inline' }}>{segment}</span>;
+                    }
+                    // Слова обгортаємо в span для анімації
+                    return (
+                      <span key={index} className={welcomeStyles.wisdomWord} data-word style={{ display: 'inline-block' }}>
+                        {segment}
+                      </span>
+                    );
+                  })}
                 </p>
               </div>
 
@@ -201,6 +321,7 @@ function InspirationGarden() {
         className={`${welcomeStyles.rightTopButton} ${
           isModalOpen ? styles.hidden : ""
         }`}
+        onClick={openMenu}
       >
         <svg
           width="33"
@@ -319,6 +440,7 @@ function InspirationGarden() {
                   src="/marker-label.svg"
                   alt="Marker label"
                   className={styles.markerLabel}
+                  loading="lazy"
                 />
                 <div className={styles.watchButtonContent}>
                   {isActive ? (
@@ -430,6 +552,7 @@ function InspirationGarden() {
                   src="/play-icon.svg"
                   alt="Play icon"
                   className={styles.playIcon}
+                  loading="lazy"
                 />
               </button>
               <div className={styles.playIconLine}></div>
@@ -470,6 +593,7 @@ function InspirationGarden() {
             src="/cross-icon.svg"
             alt="Cross icon"
             className={welcomeStyles.welcomeCrossIcon}
+            loading="lazy"
           />
         </div>
       )}

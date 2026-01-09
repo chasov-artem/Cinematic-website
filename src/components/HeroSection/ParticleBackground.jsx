@@ -19,23 +19,14 @@ function ParticleBackground({ sectionRef }) {
     const canvas = canvasRef.current;
     const section = sectionRef?.current;
     
-    if (!canvas) {
-      console.warn("ParticleBackground: canvas ref не знайдено");
-      return;
-    }
-    
-    if (!section) {
-      console.warn("ParticleBackground: section ref не знайдено");
+    if (!canvas || !section) {
       return;
     }
 
     const ctx = canvas.getContext("2d");
     if (!ctx) {
-      console.error("ParticleBackground: не вдалося отримати 2d context");
       return;
     }
-    
-    console.log("ParticleBackground: ініціалізація", { canvas, section });
 
     // Налаштування розмірів canvas
     let dpr = window.devicePixelRatio || 1;
@@ -84,7 +75,6 @@ function ParticleBackground({ sectionRef }) {
         });
       }
       
-      console.log(`ParticleBackground: canvas resized to ${width}x${height} (device: ${canvas.width}x${canvas.height}), particles: ${particlesRef.current.length}`);
     };
     
     // Використовуємо requestAnimationFrame для забезпечення, що DOM готовий
@@ -213,8 +203,6 @@ function ParticleBackground({ sectionRef }) {
         particlesRef.current.push(new Particle(canvas.width, canvas.height));
       }
       
-      // Перевірка, що частинки створені
-      console.log(`ParticleBackground: створено ${particlesRef.current.length} частинок на canvas ${canvas.width}x${canvas.height}`);
     };
     
     // Створюємо частинки після встановлення розмірів canvas

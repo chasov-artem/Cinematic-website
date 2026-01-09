@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { FaTwitter } from "react-icons/fa";
+import { useMenu } from "../../contexts/MenuContext";
 import NavButtonRight from "../WelcomeSection/NavButtonRight";
 import NavButtonLeft from "../WelcomeSection/NavButtonLeft";
 import SphereIcon from "../WelcomeSection/SphereIcon";
@@ -9,6 +10,7 @@ import quizModalStyles from "../Quiz/QuizModal.module.css";
 import styles from "./Footer.module.css";
 
 function Footer() {
+  const { markSectionCompleted } = useMenu();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const footerRef = useRef(null);
@@ -22,6 +24,7 @@ function Footer() {
   const thankYouSocialButtonsRef = useRef(null);
   const keepExploringButtonRef = useRef(null);
   const spriteLinkRef = useRef(null);
+  const wisdomTextRef = useRef(null);
 
   const wisdomTexts = [
     "You've made great strides toward finding your gift. Your legacy is a continuous journey and it does not end here.",
@@ -41,9 +44,59 @@ function Footer() {
     }
   };
 
+  // Функція для анімації появи тексту по словах
+  const animateTextReveal = (textElement) => {
+    if (!textElement) return;
+
+    const words = textElement.querySelectorAll('[data-word]');
+    if (words.length === 0) return;
+
+    // Очищаємо попередні анімації
+    gsap.killTweensOf(words);
+
+    // Спочатку ховаємо всі слова
+    gsap.set(words, { opacity: 0, y: 20 });
+
+    // Анімуємо поступове з'явлення кожного слова
+    gsap.to(words, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      stagger: 0.08, // Затримка між словами
+    });
+  };
+
   const isFirstSlide = currentTextIndex === 0;
   const showThankYouMenu = currentTextIndex === wisdomTexts.length;
   const showWisdomGuide = isMenuOpen && !showThankYouMenu;
+
+  // Ефект для анімації тексту при зміні індексу
+  useEffect(() => {
+    if (wisdomTextRef.current && showWisdomGuide && currentTextIndex < wisdomTexts.length) {
+      const textElement = wisdomTextRef.current;
+      // Невелика затримка, щоб DOM оновився
+      const timer = setTimeout(() => {
+        animateTextReveal(textElement);
+      }, 150);
+
+      return () => {
+        clearTimeout(timer);
+        // Очищаємо анімації при розмонтуванні
+        if (textElement) {
+          const words = textElement.querySelectorAll('[data-word]');
+          gsap.killTweensOf(words);
+        }
+      };
+    }
+  }, [currentTextIndex, showWisdomGuide, wisdomTexts.length]);
+
+  // Позначаємо секцію як завершену, коли показується Thank You меню
+  useEffect(() => {
+    if (showThankYouMenu) {
+      markSectionCompleted("footer", true);
+    }
+  }, [showThankYouMenu, markSectionCompleted]);
 
   const handleKeepExploring = () => {
     const welcomeSection = document.getElementById("welcome");
@@ -229,14 +282,30 @@ function Footer() {
                 src="/wisdom-guide-frame.svg"
                 alt=""
                 className={welcomeStyles.wisdomContainerFrame}
+                loading="lazy"
               />
               <div className={welcomeStyles.sphereIcon}>
                 <SphereIcon />
               </div>
               <div className={welcomeStyles.wisdomContent}>
-                <div className={welcomeStyles.wisdomText}>
+                <div className={welcomeStyles.wisdomText} ref={wisdomTextRef}>
                   <p style={{ whiteSpace: "pre-line" }}>
-                    {wisdomTexts[currentTextIndex]}
+                    {wisdomTexts[currentTextIndex] && wisdomTexts[currentTextIndex].split(/(\s+|\n)/).map((segment, index) => {
+                      // Обробляємо переноси рядків
+                      if (segment === '\n') {
+                        return <br key={index} />;
+                      }
+                      // Пробіли залишаємо як є
+                      if (segment.trim() === '') {
+                        return <span key={index} className={welcomeStyles.wisdomWord} style={{ display: 'inline' }}>{segment}</span>;
+                      }
+                      // Слова обгортаємо в span для анімації
+                      return (
+                        <span key={index} className={welcomeStyles.wisdomWord} data-word style={{ display: 'inline-block' }}>
+                          {segment}
+                        </span>
+                      );
+                    })}
                   </p>
                 </div>
 
@@ -287,6 +356,7 @@ function Footer() {
             src="/cross-icon.svg"
             alt="Cross icon"
             className={styles.thankYouCrossIcon}
+            loading="lazy"
           />
 
           {/* Panel Lines */}
@@ -295,6 +365,7 @@ function Footer() {
               src="/panel-lines.webp"
               alt="Panel lines"
               className={styles.thankYouPanelLinesImage}
+              loading="lazy"
             />
             {/* Logos in center */}
             <div ref={thankYouLogosRef} className={styles.thankYouLogos}>

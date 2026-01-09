@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BsHexagon } from "react-icons/bs";
 import { AiOutlineCheck } from "react-icons/ai";
+import { useMenu } from "../../contexts/MenuContext";
 import NavButtonRight from "../WelcomeSection/NavButtonRight";
 import NavButtonLeft from "../WelcomeSection/NavButtonLeft";
 import QuizModal from "./QuizModal";
@@ -13,6 +14,7 @@ import { addSectionScrollAnimations } from "../../utils/sectionScrollAnimations"
 gsap.registerPlugin(ScrollTrigger);
 
 function Quiz() {
+  const { openMenu, markSectionCompleted } = useMenu();
   const sectionRef = useRef(null);
   const topLogoRef = useRef(null);
   const topButtonRef = useRef(null);
@@ -49,6 +51,7 @@ function Quiz() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setIsQuizTaken(true);
+    markSectionCompleted("quiz", true);
   };
 
   useEffect(() => {
@@ -88,6 +91,7 @@ function Quiz() {
         className={`${welcomeStyles.rightTopButton} ${
           isModalOpen ? styles.hidden : ""
         }`}
+        onClick={openMenu}
       >
         <svg
           width="33"
@@ -196,6 +200,7 @@ function Quiz() {
               src="/marker-label.svg"
               alt="Marker label"
               className={styles.markerLabel}
+              loading="lazy"
             />
             <div className={styles.watchButtonContent}>
               {isQuizTaken ? (
@@ -303,11 +308,12 @@ function Quiz() {
             }}
           >
             <BsHexagon className={styles.playIconHexagon} />
-            <img
-              src="/play-icon.svg"
-              alt="Play icon"
-              className={styles.playIcon}
-            />
+              <img
+                src="/play-icon.svg"
+                alt="Play icon"
+                className={styles.playIcon}
+                loading="lazy"
+              />
           </button>
           <div className={styles.playIconLine}></div>
         </div>
@@ -331,11 +337,12 @@ function Quiz() {
         <div className={welcomeStyles.welcomeText}>
           <span className={welcomeStyles.welcomeLabel}>quiz experience</span>
         </div>
-        <img
-          src="/cross-icon.svg"
-          alt="Cross icon"
-          className={welcomeStyles.welcomeCrossIcon}
-        />
+          <img
+            src="/cross-icon.svg"
+            alt="Cross icon"
+            className={welcomeStyles.welcomeCrossIcon}
+            loading="lazy"
+          />
       </div>
 
       {/* Bottom footer */}

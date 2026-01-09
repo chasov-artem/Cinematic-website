@@ -124,6 +124,7 @@
   transition: background-color 0.3s ease;
   z-index: 0;
   pointer-events: auto;
+  will-change: background-color, transform;
 }
 
 .watchButton:hover:not(.watchButtonActive):not([data-active="true"]) {

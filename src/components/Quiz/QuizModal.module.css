@@ -10,6 +10,9 @@
   align-items: center;
   justify-content: center;
   padding: 0;
+  overflow: hidden;
+  touch-action: none; /* Блокуємо touch скрол на overlay */
+  overscroll-behavior: contain; /* Запобігаємо скролу фону */
 }
 
 .modalContent {
@@ -20,6 +23,8 @@
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.5);
   transform: translateY(-20px);
+  overflow: hidden;
+  overscroll-behavior: contain; /* Запобігаємо скролу фону */
 }
 
 /* Border frame - 5px from content */
@@ -122,6 +127,9 @@
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 
 .quizContent {
@@ -990,10 +998,17 @@
   width: 100%;
   padding: 2rem;
   box-sizing: border-box;
-  overflow-y: scroll;
-  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100vh - 4rem);
+  height: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  position: relative;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  touch-action: pan-y; /* Дозволяємо вертикальний скрол на resultsContent */
+  pointer-events: auto; /* Дозволяємо події на resultsContent */
+  z-index: 1;
 }
 
 .resultsContent::-webkit-scrollbar {
@@ -1304,24 +1319,9 @@
   }
 }
 
-/* Continue Button */
-.continueButton {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 1rem 2rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  overflow: visible;
-  min-width: 240px;
-  min-height: 59px;
+/* Continue Button - перевизначення для використання стилів з HeroSection */
+.continueButtonOverride {
+  position: relative !important;
   margin-top: 2rem;
 }
 
@@ -1464,12 +1464,11 @@
   transform: scale(0.98);
 }
 
-/* Take Quiz Again */
-.takeQuizAgain {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.1rem;
+/* Take Quiz Again - перевизначення для використання стилів з MenuModal */
+.takeQuizAgainOverride {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
   margin-top: 2rem;
 }
 

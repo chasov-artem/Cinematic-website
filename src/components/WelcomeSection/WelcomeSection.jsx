@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useMenu } from "../../contexts/MenuContext";
 import styles from "./WelcomeSection.module.css";
 import SphereIcon from "./SphereIcon";
 import NavButtonLeft from "./NavButtonLeft";
 import NavButtonRight from "./NavButtonRight";
+import { createParallaxEffect } from "../../utils/parallaxEffects";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function WelcomeSection() {
+  const { openMenu, markSectionCompleted } = useMenu();
   const sectionRef = useRef(null);
   const wisdomContainerRef = useRef(null);
   const wisdomLabelRef = useRef(null);
@@ -16,6 +19,7 @@ function WelcomeSection() {
   const tutorialPanelRef = useRef(null);
   const rightTopButtonRef = useRef(null);
   const rightCenterButtonRef = useRef(null);
+  const wisdomTextRef = useRef(null);
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [journeyStarted, setJourneyStarted] = useState(false);
@@ -147,14 +151,81 @@ function WelcomeSection() {
       );
     }
 
+    // Паралакс ефекти через RAF
+    const parallaxCleanups = [];
+
+    // Паралакс для Wisdom Container
+    if (wisdomContainerRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(wisdomContainerRef.current, {
+          speed: -0.2,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
+    // Паралакс для Welcome Center
+    if (welcomeCenterRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(welcomeCenterRef.current, {
+          speed: -0.15,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
+    // Паралакс для Tutorial Panel
+    if (tutorialPanelRef.current) {
+      parallaxCleanups.push(
+        createParallaxEffect(tutorialPanelRef.current, {
+          speed: -0.1,
+          direction: "y",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        })
+      );
+    }
+
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => {
         if (trigger.vars?.trigger === section) {
           trigger.kill();
         }
       });
+      // Очищаємо паралакс ефекти
+      parallaxCleanups.forEach((cleanup) => cleanup());
     };
   }, [journeyStarted, currentTextIndex]);
+
+  // Функція для анімації появи тексту по словах
+  const animateTextReveal = (textElement) => {
+    if (!textElement) return;
+
+    const words = textElement.querySelectorAll('[data-word]');
+    if (words.length === 0) return;
+
+    // Очищаємо попередні анімації
+    gsap.killTweensOf(words);
+
+    // Спочатку ховаємо всі слова
+    gsap.set(words, { opacity: 0, y: 20 });
+
+    // Анімуємо поступове з'явлення кожного слова
+    gsap.to(words, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      stagger: 0.08, // Затримка між словами
+    });
+  };
 
   const handleNext = () => {
     setCurrentTextIndex((prev) => {
@@ -172,6 +243,7 @@ function WelcomeSection() {
   const handleBeginJourney = () => {
     setJourneyStarted(true);
     setCurrentTextIndex(0); // Сховати Tutorial Panel
+    markSectionCompleted("welcome", true);
   };
 
   const handleNextSection = () => {
@@ -184,6 +256,26 @@ function WelcomeSection() {
   const isFirstSlide = currentTextIndex === 0;
   const showCenterElements = currentTextIndex >= 2 && !journeyStarted;
   const showWisdomContainer = currentTextIndex < 2 && !journeyStarted;
+
+  // Ефект для анімації тексту при зміні індексу
+  useEffect(() => {
+    if (wisdomTextRef.current && showWisdomContainer && currentTextIndex < wisdomTexts.length) {
+      const textElement = wisdomTextRef.current;
+      // Невелика затримка, щоб DOM оновився
+      const timer = setTimeout(() => {
+        animateTextReveal(textElement);
+      }, 150);
+
+      return () => {
+        clearTimeout(timer);
+        // Очищаємо анімації при розмонтуванні
+        if (textElement) {
+          const words = textElement.querySelectorAll('[data-word]');
+          gsap.killTweensOf(words);
+        }
+      };
+    }
+  }, [currentTextIndex, showWisdomContainer, wisdomTexts.length]);
 
   return (
     <section ref={sectionRef} className={styles.welcomeSection} id="welcome">
@@ -204,14 +296,30 @@ function WelcomeSection() {
               src="/wisdom-guide-frame.svg"
               alt=""
               className={styles.wisdomContainerFrame}
+              loading="lazy"
             />
             <div className={styles.sphereIcon}>
               <SphereIcon />
             </div>
             <div className={styles.wisdomContent}>
-              <div className={styles.wisdomText}>
+              <div className={styles.wisdomText} ref={wisdomTextRef}>
                 <p style={{ whiteSpace: "pre-line" }}>
-                  {wisdomTexts[currentTextIndex]}
+                  {wisdomTexts[currentTextIndex] && wisdomTexts[currentTextIndex].split(/(\s+|\n)/).map((segment, index) => {
+                    // Обробляємо переноси рядків
+                    if (segment === '\n') {
+                      return <br key={index} />;
+                    }
+                    // Пробіли залишаємо як є
+                    if (segment.trim() === '') {
+                      return <span key={index} className={styles.wisdomWord} style={{ display: 'inline' }}>{segment}</span>;
+                    }
+                    // Слова обгортаємо в span для анімації
+                    return (
+                      <span key={index} className={styles.wisdomWord} data-word style={{ display: 'inline-block' }}>
+                        {segment}
+                      </span>
+                    );
+                  })}
                 </p>
               </div>
 
@@ -276,11 +384,12 @@ function WelcomeSection() {
         <div ref={tutorialPanelRef} className={styles.tutorialPanel}>
           <div className={styles.tutorialHeader}>TUTORIAL</div>
           <div className={styles.tutorialPanelLines}>
-            <img
-              src="/panel-lines.webp"
-              alt="Panel lines"
-              className={styles.panelLinesImage}
-            />
+          <img
+            src="/panel-lines.webp"
+            alt="Panel lines"
+            className={styles.panelLinesImage}
+            loading="lazy"
+          />
             <div className={styles.tutorialIcons}>
               <div className={styles.tutorialIconWrapper}>
                 <div className={styles.tutorialIconHexagon}>
@@ -647,6 +756,7 @@ function WelcomeSection() {
             src="/cross-icon.svg"
             alt="Cross icon"
             className={styles.welcomeCrossIcon}
+            loading="lazy"
           />
         </div>
       )}
@@ -655,7 +765,11 @@ function WelcomeSection() {
       {journeyStarted && (
         <>
           {/* Top right - Menu button */}
-          <button ref={rightTopButtonRef} className={styles.rightTopButton}>
+          <button
+            ref={rightTopButtonRef}
+            className={styles.rightTopButton}
+            onClick={openMenu}
+          >
             <svg
               width="33"
               height="28"

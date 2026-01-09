@@ -92,6 +92,11 @@
   text-shadow: 0 0 0.3125rem rgba(59, 169, 31, 0.5), 0 0 0.75rem #99ff88;
 }
 
+.wisdomWord {
+  display: inline-block;
+  will-change: opacity, transform;
+}
+
 @media (min-width: 1250px) {
   .wisdomText {
     padding: 1.875rem 1.875rem 1.875rem 10rem;
@@ -120,6 +125,7 @@
   background: transparent;
   border: none;
   padding: 0;
+  will-change: transform, opacity;
 }
 
 .navButton:hover {
