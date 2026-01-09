@@ -19,7 +19,6 @@ function AppContent() {
   const { isMenuOpen, closeMenu } = useMenu();
   const lenisRef = useRef(null);
 
-  // Ініціалізація Lenis smooth scroll
   useEffect(() => {
     lenisRef.current = initLenis({
       duration: 1.2,
@@ -36,7 +35,6 @@ function AppContent() {
     };
   }, []);
 
-  // Оновлюємо ScrollTrigger при зміні розміру вікна
   useEffect(() => {
     const handleResize = () => {
       ScrollTrigger.refresh();
@@ -50,34 +48,17 @@ function AppContent() {
 
   return (
     <div className="app">
-      {/* Global Three.js Scene Background */}
       <GlobalScene />
 
-      {/* Hero Section */}
       <HeroSection />
-
-      {/* Welcome Section */}
       <WelcomeSection />
-
-      {/* Origin Stories Section */}
       <OriginStories />
-
-      {/* Inspiration Garden Section */}
       <InspirationGarden />
-
-      {/* Sprite Zero Sugar Section */}
       <SpriteZero />
-
-      {/* Library Section */}
       <Library />
-
-      {/* Quiz Section */}
       <Quiz />
-
-      {/* Footer */}
       <Footer />
 
-      {/* Menu Modal */}
       <MenuModal isOpen={isMenuOpen} onClose={closeMenu} />
     </div>
   );

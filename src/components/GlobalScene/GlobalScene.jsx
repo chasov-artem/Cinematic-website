@@ -8,25 +8,18 @@ import styles from "./GlobalScene.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/**
- * Обертається сфера всередині Three.js сцени
- */
 function RotatingSphere() {
   const meshRef = useRef(null);
   const rotationRef = useRef({ x: 0, y: 0 });
 
-  // Оновлюємо обертання на основі скролу
   useEffect(() => {
-    // Створюємо ScrollTrigger для контролю обертання
     const scrollTrigger = ScrollTrigger.create({
       trigger: "body",
       start: "top top",
       end: "bottom bottom",
       scrub: 1,
       onUpdate: (self) => {
-        // Обертання навколо Y-осі пропорційно скролу
         rotationRef.current.y = self.progress * Math.PI * 2;
-        // Невелике обертання навколо X-осі
         rotationRef.current.x = self.progress * Math.PI * 0.5;
       },
     });
@@ -38,7 +31,6 @@ function RotatingSphere() {
 
   useFrame(() => {
     if (meshRef.current) {
-      // Плавне обертання з інтерполяцією
       meshRef.current.rotation.y = gsap.utils.interpolate(
         meshRef.current.rotation.y,
         rotationRef.current.y,
@@ -67,14 +59,10 @@ function RotatingSphere() {
   );
 }
 
-/**
- * Абстрактні частинки для додаткової атмосфери
- */
 function Particles() {
   const particlesRef = useRef(null);
   const particlesData = useRef([]);
 
-  // Створюємо дані частинок один раз
   const particles = Array.from({ length: 200 }, (_, i) => ({
     id: i,
     initialX: (Math.random() - 0.5) * 20,
@@ -94,7 +82,9 @@ function Particles() {
         if (particlesData.current[i]) {
           const particle = particlesData.current[i];
           const time = state.clock.getElapsedTime();
+          
           node.position.y = particle.initialY + Math.sin(time * particle.speed * 10 + particle.offset) * 2;
+          
           node.rotation.y = time * particle.speed * 5;
         }
       });
@@ -119,9 +109,6 @@ function Particles() {
   );
 }
 
-/**
- * Головна сцена Three.js
- */
 function Scene() {
   return (
     <>
@@ -135,9 +122,6 @@ function Scene() {
   );
 }
 
-/**
- * Глобальний Three.js фон для всього сайту
- */
 function GlobalScene() {
   const canvasRef = useRef(null);
 

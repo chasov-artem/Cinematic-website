@@ -3,16 +3,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/**
- * Створює паралакс ефект через RAF зі ScrollTrigger
- * @param {HTMLElement|string} element - Елемент або селектор
- * @param {Object} options - Опції паралакс ефекту
- * @returns {Function} - Функція очищення
- */
 export const createParallaxEffect = (element, options = {}) => {
   const {
-    speed = 0.5, // Швидкість паралакс ефекту (0-1)
-    direction = "y", // Напрямок: 'x', 'y', або обидва
+    speed = 0.5,
+    direction = "y",
     start = "top bottom",
     end = "bottom top",
     scrub = true,
@@ -38,7 +32,6 @@ export const createParallaxEffect = (element, options = {}) => {
     } else if (direction === "y") {
       gsap.set(el, { y: translateValue, force3D: true });
     } else {
-      // Для обох напрямків
       gsap.set(el, {
         x: translateValue * 0.5,
         y: translateValue,
@@ -59,7 +52,6 @@ export const createParallaxEffect = (element, options = {}) => {
     onUpdate: (self) => {
       currentProgress = self.progress;
       
-      // Використовуємо RAF для плавної анімації
       if (rafId === null) {
         rafId = requestAnimationFrame(() => {
           updateTransform();
@@ -69,7 +61,6 @@ export const createParallaxEffect = (element, options = {}) => {
     },
   });
 
-  // Початкове оновлення
   updateTransform();
 
   return () => {
@@ -81,12 +72,6 @@ export const createParallaxEffect = (element, options = {}) => {
   };
 };
 
-/**
- * Створює паралакс ефект для множини елементів з різною швидкістю
- * @param {Array} elements - Масив об'єктів { element, speed, direction }
- * @param {Object} options - Загальні опції
- * @returns {Function} - Функція очищення
- */
 export const createMultiParallaxEffect = (elements, options = {}) => {
   const {
     start = "top bottom",
@@ -109,15 +94,9 @@ export const createMultiParallaxEffect = (elements, options = {}) => {
   };
 };
 
-/**
- * Створює паралакс ефект з обертанням
- * @param {HTMLElement|string} element - Елемент
- * @param {Object} options - Опції
- * @returns {Function} - Функція очищення
- */
 export const createRotationParallax = (element, options = {}) => {
   const {
-    rotationSpeed = 10, // Градуси на повний скрол
+    rotationSpeed = 10,
     start = "top bottom",
     end = "bottom top",
     scrub = true,
@@ -163,12 +142,6 @@ export const createRotationParallax = (element, options = {}) => {
   };
 };
 
-/**
- * Створює паралакс ефект з масштабуванням
- * @param {HTMLElement|string} element - Елемент
- * @param {Object} options - Опції
- * @returns {Function} - Функція очищення
- */
 export const createScaleParallax = (element, options = {}) => {
   const {
     minScale = 0.8,
@@ -218,12 +191,6 @@ export const createScaleParallax = (element, options = {}) => {
   };
 };
 
-/**
- * Створює паралакс ефект з opacity
- * @param {HTMLElement|string} element - Елемент
- * @param {Object} options - Опції
- * @returns {Function} - Функція очищення
- */
 export const createOpacityParallax = (element, options = {}) => {
   const {
     minOpacity = 0,

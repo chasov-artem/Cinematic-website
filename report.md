@@ -8,9 +8,7 @@
 
 ## Video Walkthrough
 
-**Status:** В процесі підготовки
-
-**Google Drive Link:** _(буде додано після запису)_
+**Google Drive Link:** https://drive.google.com/file/d/1gEpBzFMe1ErxV0E_D_6tRlPA1NltyEUf/view?usp=sharing
 
 ---
 
@@ -43,6 +41,7 @@
 **Проблема:** Оригінальний сайт використовує складну 3D анімацію, яку не потрібно було реплікувати.
 
 **Рішення:** Створено абстрактну Three.js сцену з:
+
 - Обертаючою сферою з MeshDistortMaterial (зелений колір #99ff88)
 - 200 частинками з плавними рухами
 - Scroll-driven обертанням сфери
@@ -55,6 +54,7 @@
 **Підхід:** Використання GSAP ScrollTrigger з інтеграцією Lenis smooth scroll.
 
 **Особливості:**
+
 - Pinning секцій для створення "full-screen" ефекту
 - Паралакс ефекти через RAF (requestAnimationFrame) для плавності
 - Word-by-word text reveal анімації
@@ -65,6 +65,7 @@
 ### 3. Component Architecture
 
 **Структура:**
+
 - Модульні компоненти для кожної секції
 - Shared компоненти (NavButtonLeft, NavButtonRight, ThreeSphereIcon)
 - Context API для глобального стану (MenuContext)
@@ -77,6 +78,7 @@
 **Підхід:** React Context для меню та відстеження прогресу секцій.
 
 **Функціонал:**
+
 - Відстеження переглянутих секцій
 - Відкриття/закриття меню
 - Маркування секцій як завершених
@@ -118,22 +120,26 @@ src/
 ## Key Features Implemented
 
 ### 1. Scroll-driven Sections
+
 - 8 повноекранних секцій з pinning
 - Плавні переходи між секціями
 - Паралакс ефекти для глибини
 
 ### 2. Interactive Modals
+
 - QuoteModal для цитат персонажів
 - VideoModal для відео історій
 - QuizModal для інтерактивної вікторини
 - MenuModal для навігації
 
 ### 3. Progress Tracking
+
 - Відстеження переглянутих секцій
 - Візуальні індикатори прогресу
 - Автоматичне маркування завершених секцій
 
 ### 4. Smooth Animations
+
 - Word-by-word text reveals
 - Fade/move/scale transitions
 - Parallax effects
@@ -154,15 +160,19 @@ src/
 ## Challenges & Solutions
 
 ### Challenge 1: Синхронізація Lenis з ScrollTrigger
+
 **Рішення:** Інтеграція через `lenis.on("scroll", ScrollTrigger.update)` та RAF loop.
 
 ### Challenge 2: Паралакс ефекти без jank
+
 **Рішення:** Використання RAF з дебаунсингом для оновлень transform.
 
 ### Challenge 3: Word-by-word text animation
+
 **Рішення:** Розбиття тексту на слова з data-атрибутами та GSAP stagger.
 
 ### Challenge 4: Memory leaks з ScrollTrigger
+
 **Рішення:** Правильне cleanup в useEffect з kill() для всіх тригерів.
 
 ---
@@ -170,6 +180,7 @@ src/
 ## Browser Compatibility
 
 Проект протестовано та працює на:
+
 - ✅ Chrome (latest)
 - ✅ Firefox (latest)
 - ✅ Safari (latest)
@@ -201,6 +212,7 @@ src/
 ## Conclusion
 
 Проект успішно реалізує основні вимоги ТЗ:
+
 - ✅ Scroll-driven анімації
 - ✅ Layout та типографіка близькі до оригіналу
 - ✅ Плавна продуктивність

@@ -33,7 +33,6 @@ function WelcomeSection() {
     const section = sectionRef.current;
     if (!section) return;
 
-    // ScrollTrigger pin для фіксації секції
     const pinTrigger = ScrollTrigger.create({
       trigger: section,
       start: "top top",
@@ -42,8 +41,6 @@ function WelcomeSection() {
       pinSpacing: false,
       scrub: 1,
     });
-
-    // Анімація Wisdom Container
     if (wisdomContainerRef.current) {
       gsap.fromTo(
         wisdomContainerRef.current,
@@ -62,8 +59,6 @@ function WelcomeSection() {
         }
       );
     }
-
-    // Анімація Wisdom Label
     if (wisdomLabelRef.current) {
       gsap.fromTo(
         wisdomLabelRef.current,
@@ -82,8 +77,6 @@ function WelcomeSection() {
         }
       );
     }
-
-    // Анімація Welcome Center (коли показується)
     if (welcomeCenterRef.current) {
       gsap.fromTo(
         welcomeCenterRef.current,
@@ -102,8 +95,6 @@ function WelcomeSection() {
         }
       );
     }
-
-    // Анімація Tutorial Panel
     if (tutorialPanelRef.current) {
       gsap.fromTo(
         tutorialPanelRef.current,
@@ -121,8 +112,6 @@ function WelcomeSection() {
         }
       );
     }
-
-    // Анімація правої кнопки меню
     if (rightTopButtonRef.current) {
       gsap.fromTo(
         rightTopButtonRef.current,
@@ -140,8 +129,6 @@ function WelcomeSection() {
         }
       );
     }
-
-    // Анімація правої центральної кнопки
     if (rightCenterButtonRef.current) {
       gsap.fromTo(
         rightCenterButtonRef.current,
@@ -161,10 +148,7 @@ function WelcomeSection() {
       );
     }
 
-    // Паралакс ефекти через RAF
     const parallaxCleanups = [];
-
-    // Паралакс для Wisdom Container
     if (wisdomContainerRef.current) {
       parallaxCleanups.push(
         createParallaxEffect(wisdomContainerRef.current, {
@@ -176,8 +160,6 @@ function WelcomeSection() {
         })
       );
     }
-
-    // Паралакс для Welcome Center
     if (welcomeCenterRef.current) {
       parallaxCleanups.push(
         createParallaxEffect(welcomeCenterRef.current, {
@@ -189,8 +171,6 @@ function WelcomeSection() {
         })
       );
     }
-
-    // Паралакс для Tutorial Panel
     if (tutorialPanelRef.current) {
       parallaxCleanups.push(
         createParallaxEffect(tutorialPanelRef.current, {
@@ -210,37 +190,34 @@ function WelcomeSection() {
           trigger.kill();
         }
       });
-      // Очищаємо паралакс ефекти
       parallaxCleanups.forEach((cleanup) => cleanup());
     };
   }, [journeyStarted, currentTextIndex]);
 
-  // Функція для анімації появи тексту по словах
   const animateTextReveal = (textElement) => {
     if (!textElement) return;
 
     const words = textElement.querySelectorAll('[data-word]');
     if (words.length === 0) return;
 
-    // Очищаємо попередні анімації
     gsap.killTweensOf(words);
 
-    // Спочатку ховаємо всі слова
-    gsap.set(words, { opacity: 0, y: 20 });
+    gsap.set(words, { 
+      opacity: 0,
+      y: 20
+    });
 
-    // Анімуємо поступове з'явлення кожного слова
     gsap.to(words, {
       opacity: 1,
       y: 0,
       duration: 0.6,
       ease: "power2.out",
-      stagger: 0.08, // Затримка між словами
+      stagger: 0.08,
     });
   };
 
   const handleNext = () => {
     setCurrentTextIndex((prev) => {
-      // Дозволяємо перейти за межі масиву для показу центральних елементів
       return prev + 1;
     });
   };
@@ -253,7 +230,7 @@ function WelcomeSection() {
 
   const handleBeginJourney = () => {
     setJourneyStarted(true);
-    setCurrentTextIndex(0); // Сховати Tutorial Panel
+    setCurrentTextIndex(0);
     markSectionCompleted("welcome", true);
   };
 
@@ -268,18 +245,15 @@ function WelcomeSection() {
   const showCenterElements = currentTextIndex >= 2 && !journeyStarted;
   const showWisdomContainer = currentTextIndex < 2 && !journeyStarted;
 
-  // Ефект для анімації тексту при зміні індексу
   useEffect(() => {
     if (wisdomTextRef.current && showWisdomContainer && currentTextIndex < wisdomTexts.length) {
       const textElement = wisdomTextRef.current;
-      // Невелика затримка, щоб DOM оновився
       const timer = setTimeout(() => {
         animateTextReveal(textElement);
       }, 150);
 
       return () => {
         clearTimeout(timer);
-        // Очищаємо анімації при розмонтуванні
         if (textElement) {
           const words = textElement.querySelectorAll('[data-word]');
           gsap.killTweensOf(words);
@@ -290,7 +264,6 @@ function WelcomeSection() {
 
   return (
     <section ref={sectionRef} className={styles.welcomeSection} id="welcome">
-      {/* Top left logo */}
       <div className={styles.topLogo}>
         <img
           src="/hall-logo.svg"
@@ -299,7 +272,6 @@ function WelcomeSection() {
         />
       </div>
 
-      {/* Main content container - Wisdom Guide */}
       {showWisdomContainer && (
         <div ref={wisdomContainerRef} className={styles.wisdomContainerWrapper}>
           <div className={styles.wisdomContainer}>
@@ -316,15 +288,17 @@ function WelcomeSection() {
               <div className={styles.wisdomText} ref={wisdomTextRef}>
                 <p style={{ whiteSpace: "pre-line" }}>
                   {wisdomTexts[currentTextIndex] && wisdomTexts[currentTextIndex].split(/(\s+|\n)/).map((segment, index) => {
-                    // Обробляємо переноси рядків
+                    // Обробляємо переноси рядків - замінюємо на <br>
                     if (segment === '\n') {
                       return <br key={index} />;
                     }
-                    // Пробіли залишаємо як є
+                    // Пробіли залишаємо як є (display: 'inline' - не можна анімувати)
                     if (segment.trim() === '') {
                       return <span key={index} className={styles.wisdomWord} style={{ display: 'inline' }}>{segment}</span>;
                     }
-                    // Слова обгортаємо в span для анімації
+                    // ⚠️ КЛЮЧОВО: Слова обгортаємо в span з data-word атрибутом
+                    // display: 'inline-block' дозволяє анімувати кожне слово окремо
+                    // data-word - атрибут для селекції всіх слів в animateTextReveal
                     return (
                       <span key={index} className={styles.wisdomWord} data-word style={{ display: 'inline-block' }}>
                         {segment}
@@ -358,7 +332,6 @@ function WelcomeSection() {
         </div>
       )}
 
-      {/* Left side - GUIDE WISDOM label */}
       {showWisdomContainer && (
         <div ref={wisdomLabelRef} className={styles.wisdomLabelContainer}>
           <div className={styles.wisdomLine}></div>
@@ -369,7 +342,6 @@ function WelcomeSection() {
         </div>
       )}
 
-      {/* Bottom left footer */}
       <div className={styles.bottomFooter}>
         <div className={styles.footerFrame}>
           <div className={styles.footerLogos}>
@@ -390,7 +362,6 @@ function WelcomeSection() {
         </div>
       </div>
 
-      {/* Tutorial Panel - показується коли showCenterElements */}
       {showCenterElements && (
         <div ref={tutorialPanelRef} className={styles.tutorialPanel}>
           <div className={styles.tutorialHeader}>TUTORIAL</div>
@@ -674,7 +645,6 @@ function WelcomeSection() {
               </div>
             </div>
           </div>
-          {/* Begin Journey Button */}
           <button
             className={styles.beginJourneyButton}
             onClick={handleBeginJourney}
@@ -749,7 +719,6 @@ function WelcomeSection() {
         </div>
       )}
 
-      {/* Bottom center - Welcome */}
       {!showWisdomContainer && !showCenterElements && (
         <div ref={welcomeCenterRef} className={styles.welcomeCenter}>
           <div className={styles.welcomeLogo}>
