@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMenu } from "../../contexts/MenuContext";
 import styles from "./WelcomeSection.module.css";
-import SphereIcon from "./SphereIcon";
+import ThreeSphereIcon from "./ThreeSphereIcon";
 import NavButtonLeft from "./NavButtonLeft";
 import NavButtonRight from "./NavButtonRight";
 import { createParallaxEffect } from "../../utils/parallaxEffects";
@@ -32,6 +32,16 @@ function WelcomeSection() {
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
+
+    // ScrollTrigger pin для фіксації секції
+    const pinTrigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: "bottom bottom",
+      pin: true,
+      pinSpacing: false,
+      scrub: 1,
+    });
 
     // Анімація Wisdom Container
     if (wisdomContainerRef.current) {
@@ -194,6 +204,7 @@ function WelcomeSection() {
     }
 
     return () => {
+      pinTrigger.kill();
       ScrollTrigger.getAll().forEach((trigger) => {
         if (trigger.vars?.trigger === section) {
           trigger.kill();
@@ -299,7 +310,7 @@ function WelcomeSection() {
               loading="lazy"
             />
             <div className={styles.sphereIcon}>
-              <SphereIcon />
+              <ThreeSphereIcon />
             </div>
             <div className={styles.wisdomContent}>
               <div className={styles.wisdomText} ref={wisdomTextRef}>

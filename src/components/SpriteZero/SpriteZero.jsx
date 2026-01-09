@@ -25,6 +25,7 @@ function SpriteZero() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [watchedVideo, setWatchedVideo] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const videoStory = {
     id: 1,
@@ -66,7 +67,20 @@ function SpriteZero() {
   };
 
   useEffect(() => {
-    return addSectionScrollAnimations(sectionRef, {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    // ScrollTrigger pin для фіксації секції
+    const pinTrigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: "bottom bottom",
+      pin: true,
+      pinSpacing: false,
+      scrub: 1,
+    });
+
+    const cleanupScrollAnimations = addSectionScrollAnimations(sectionRef, {
       topLogoRef,
       topButtonRef,
       leftButtonRef,
@@ -74,6 +88,13 @@ function SpriteZero() {
       watchButtonsRef: watchButtonRef,
       bottomCenterRef,
     });
+
+    return () => {
+      pinTrigger.kill();
+      if (cleanupScrollAnimations) {
+        cleanupScrollAnimations();
+      }
+    };
   }, []);
 
   return (
@@ -82,6 +103,12 @@ function SpriteZero() {
       className={styles.spriteZeroSection}
       id="sprite-zero"
     >
+      {/* Preview image for section background */}
+      <div
+        className={`${styles.previewImage} ${isHovered ? styles.previewImageVisible : ''}`}
+        data-story-id={videoStory.id}
+        style={{ backgroundImage: `url(${videoStory.image})` }}
+      ></div>
       {/* Top left logo */}
       <div ref={topLogoRef} className={welcomeStyles.topLogo}>
         <img
@@ -177,7 +204,12 @@ function SpriteZero() {
       <div className={styles.videoContentContainer}>
         {/* WATCH button */}
         <div ref={watchButtonRef} className={styles.watchButtonsContainer}>
-          <div className={styles.watchButtonWrapper}>
+          <div 
+            className={styles.watchButtonWrapper}
+            data-story-id={videoStory.id}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
             <button
               className={`${styles.watchButton}${
                 watchedVideo ? ` ${styles.watchButtonActive}` : ""

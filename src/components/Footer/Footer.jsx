@@ -4,7 +4,7 @@ import { FaTwitter } from "react-icons/fa";
 import { useMenu } from "../../contexts/MenuContext";
 import NavButtonRight from "../WelcomeSection/NavButtonRight";
 import NavButtonLeft from "../WelcomeSection/NavButtonLeft";
-import SphereIcon from "../WelcomeSection/SphereIcon";
+import ThreeSphereIcon from "../WelcomeSection/ThreeSphereIcon";
 import welcomeStyles from "../WelcomeSection/WelcomeSection.module.css";
 import quizModalStyles from "../Quiz/QuizModal.module.css";
 import styles from "./Footer.module.css";
@@ -285,7 +285,7 @@ function Footer() {
                 loading="lazy"
               />
               <div className={welcomeStyles.sphereIcon}>
-                <SphereIcon />
+                <ThreeSphereIcon />
               </div>
               <div className={welcomeStyles.wisdomContent}>
                 <div className={welcomeStyles.wisdomText} ref={wisdomTextRef}>

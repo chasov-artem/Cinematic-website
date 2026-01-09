@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./styles/globals.css";
 import { MenuProvider } from "./contexts/MenuContext";
+import GlobalScene from "./components/GlobalScene/GlobalScene";
 import HeroSection from "./components/HeroSection/HeroSection";
 import WelcomeSection from "./components/WelcomeSection/WelcomeSection";
 import OriginStories from "./components/OriginStories/OriginStories";
@@ -49,6 +50,9 @@ function AppContent() {
 
   return (
     <div className="app">
+      {/* Global Three.js Scene Background */}
+      <GlobalScene />
+
       {/* Hero Section */}
       <HeroSection />
 

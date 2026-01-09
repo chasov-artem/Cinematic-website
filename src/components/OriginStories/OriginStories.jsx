@@ -119,6 +119,16 @@ function OriginStories() {
     const section = sectionRef.current;
     if (!section) return;
 
+    // ScrollTrigger pin для фіксації секції
+    const pinTrigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: "bottom bottom",
+      pin: true,
+      pinSpacing: false,
+      scrub: 1,
+    });
+
     // Анімація Watch Buttons з послідовною затримкою
     if (watchButtonsRef.current) {
       const buttons = watchButtonsRef.current.querySelectorAll(
@@ -272,6 +282,7 @@ function OriginStories() {
     }
 
     return () => {
+      pinTrigger.kill();
       ScrollTrigger.getAll().forEach((trigger) => {
         if (trigger.vars?.trigger === section) {
           trigger.kill();
@@ -288,6 +299,15 @@ function OriginStories() {
       className={styles.originStoriesSection}
       id="origin-stories"
     >
+      {/* Preview images for section background */}
+      {stories.map((story, idx) => (
+        <div
+          key={`preview-${story.id}`}
+          className={styles.previewImage}
+          data-story-id={story.id}
+          style={{ backgroundImage: `url(${story.image})` }}
+        ></div>
+      ))}
       {/* Top left logo */}
       <div
         ref={topLogoRef}
@@ -393,8 +413,13 @@ function OriginStories() {
           const buttonClassName = `${styles.watchButton}${
             isActive ? ` ${styles.watchButtonActive}` : ""
           }`;
+          const story = stories[index - 1];
           return (
-            <div key={index} className={styles.watchButtonWrapper}>
+            <div 
+              key={index} 
+              className={styles.watchButtonWrapper}
+              data-story-id={story?.id}
+            >
               <button
                 className={buttonClassName}
                 data-active={isActive}

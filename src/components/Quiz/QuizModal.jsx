@@ -75,7 +75,7 @@ const QuizModal = ({ isOpen, onClose }) => {
       document.body.style.overflow = "hidden";
       // Також блокуємо скрол на html для надійності
       document.documentElement.style.overflow = "hidden";
-      
+
       // Блокуємо скрол події на document з високим пріоритетом (capture phase)
       // Це перехоплює події до того, як їх обробить Lenis
       const handleDocumentWheel = (e) => {
@@ -88,11 +88,11 @@ const QuizModal = ({ isOpen, onClose }) => {
           e.stopImmediatePropagation();
           return false;
         }
-        
+
         // Перевіряємо, чи подія всередині resultsContent
         let element = e.target;
         let isInsideResults = false;
-        
+
         while (element && element !== document.body) {
           if (element === resultsContent) {
             isInsideResults = true;
@@ -100,7 +100,7 @@ const QuizModal = ({ isOpen, onClose }) => {
           }
           element = element.parentElement;
         }
-        
+
         // Блокуємо скрол, якщо не всередині resultsContent
         if (!isInsideResults) {
           e.preventDefault();
@@ -109,7 +109,7 @@ const QuizModal = ({ isOpen, onClose }) => {
           return false;
         }
       };
-      
+
       const handleDocumentTouchMove = (e) => {
         // Перевіряємо, чи подія відбулася всередині resultsContent
         const resultsContent = resultsContentRef.current;
@@ -120,11 +120,11 @@ const QuizModal = ({ isOpen, onClose }) => {
           e.stopImmediatePropagation();
           return false;
         }
-        
+
         // Перевіряємо, чи подія всередині resultsContent
         let element = e.target;
         let isInsideResults = false;
-        
+
         while (element && element !== document.body) {
           if (element === resultsContent) {
             isInsideResults = true;
@@ -132,7 +132,7 @@ const QuizModal = ({ isOpen, onClose }) => {
           }
           element = element.parentElement;
         }
-        
+
         // Блокуємо скрол, якщо не всередині resultsContent
         if (!isInsideResults) {
           e.preventDefault();
@@ -141,19 +141,39 @@ const QuizModal = ({ isOpen, onClose }) => {
           return false;
         }
       };
-      
+
       // Додаємо обробники на document з capture: true для перехоплення до Lenis
-      document.addEventListener('wheel', handleDocumentWheel, { passive: false, capture: true });
-      document.addEventListener('touchmove', handleDocumentTouchMove, { passive: false, capture: true });
+      document.addEventListener("wheel", handleDocumentWheel, {
+        passive: false,
+        capture: true,
+      });
+      document.addEventListener("touchmove", handleDocumentTouchMove, {
+        passive: false,
+        capture: true,
+      });
       // Також на window для надійності
-      window.addEventListener('wheel', handleDocumentWheel, { passive: false, capture: true });
-      window.addEventListener('touchmove', handleDocumentTouchMove, { passive: false, capture: true });
-      
+      window.addEventListener("wheel", handleDocumentWheel, {
+        passive: false,
+        capture: true,
+      });
+      window.addEventListener("touchmove", handleDocumentTouchMove, {
+        passive: false,
+        capture: true,
+      });
+
       return () => {
-        document.removeEventListener('wheel', handleDocumentWheel, { capture: true });
-        document.removeEventListener('touchmove', handleDocumentTouchMove, { capture: true });
-        window.removeEventListener('wheel', handleDocumentWheel, { capture: true });
-        window.removeEventListener('touchmove', handleDocumentTouchMove, { capture: true });
+        document.removeEventListener("wheel", handleDocumentWheel, {
+          capture: true,
+        });
+        document.removeEventListener("touchmove", handleDocumentTouchMove, {
+          capture: true,
+        });
+        window.removeEventListener("wheel", handleDocumentWheel, {
+          capture: true,
+        });
+        window.removeEventListener("touchmove", handleDocumentTouchMove, {
+          capture: true,
+        });
         document.body.style.overflow = "";
         document.documentElement.style.overflow = "";
       };
@@ -174,71 +194,7 @@ const QuizModal = ({ isOpen, onClose }) => {
   // Знаходимо поточне питання
   const currentQ = questions.find((q) => q.id === currentQuestion);
 
-  // Анімація появи карток при зміні питання
-  useEffect(() => {
-    if (!isQuizStarted || showResults || !currentQ) return;
-
-    // Анімація заголовка питання - поява зверху з fade
-    if (questionHeaderRef.current) {
-      gsap.fromTo(
-        questionHeaderRef.current,
-        { opacity: 0, y: -50, scale: 0.95 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          ease: "power3.out",
-        }
-      );
-    }
-
-    // Анімація карток - поява з боків з обертанням
-    if (optionsContainerRef.current) {
-      const optionButtons = optionsContainerRef.current.querySelectorAll(
-        `.${styles.optionButton}`
-      );
-
-      // Встановлюємо початкові позиції для кожної картки
-      optionButtons.forEach((button, index) => {
-        // Перша картка зліва, друга справа
-        const isLeft = index === 0;
-        gsap.set(button, {
-          opacity: 0,
-          x: isLeft ? -200 : 200,
-          y: 50,
-          rotation: isLeft ? -15 : 15,
-          scale: 0.8,
-        });
-      });
-
-      // Анімуємо появу карток одночасно з різних боків
-      gsap.to(optionButtons, {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        rotation: 0,
-        scale: 1,
-        duration: 1,
-        ease: "power3.out",
-        stagger: 0.1, // Невелика затримка між картками
-        delay: 0.3, // Затримка після заголовка
-      });
-    }
-
-    return () => {
-      // Очищаємо анімації при розмонтуванні
-      if (optionsContainerRef.current) {
-        const optionButtons = optionsContainerRef.current.querySelectorAll(
-          `.${styles.optionButton}`
-        );
-        gsap.killTweensOf(optionButtons);
-      }
-      if (questionHeaderRef.current) {
-        gsap.killTweensOf(questionHeaderRef.current);
-      }
-    };
-  }, [currentQuestion, isQuizStarted, showResults, currentQ]);
+  // Анімації карток видалено
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -251,7 +207,7 @@ const QuizModal = ({ isOpen, onClose }) => {
     // Дозволяємо скрол всередині resultsContent
     e.stopPropagation();
   };
-  
+
   const handleResultsContentTouchMove = (e) => {
     // Дозволяємо скрол всередині resultsContent
     e.stopPropagation();
@@ -260,32 +216,6 @@ const QuizModal = ({ isOpen, onClose }) => {
   const handleOptionClick = (optionId, event) => {
     if (!currentQ) return;
 
-    // Анімація вибору картки - пульсація та підсвітка
-    const clickedButton = event.currentTarget;
-    if (clickedButton) {
-      // Створюємо timeline для послідовних анімацій
-      const tl = gsap.timeline();
-      
-      // Пульсація при натисканні
-      tl.to(clickedButton, {
-        scale: 1.05,
-        duration: 0.15,
-        ease: "power2.out",
-      })
-      .to(clickedButton, {
-        scale: 1,
-        duration: 0.15,
-        ease: "power2.in",
-      });
-
-      // Підсвітка обраної картки
-      gsap.to(clickedButton, {
-        filter: "brightness(1.3) drop-shadow(0 0 12px rgba(153, 255, 136, 1))",
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-
     // Зберігаємо відповідь
     const newAnswer = {
       questionId: currentQuestion,
@@ -293,59 +223,12 @@ const QuizModal = ({ isOpen, onClose }) => {
     };
     setAnswers([...answers, newAnswer]);
 
-    // Анімація зникнення - картки роз'їжджаються в сторони
-    if (optionsContainerRef.current) {
-      const optionButtons = optionsContainerRef.current.querySelectorAll(
-        `.${styles.optionButton}`
-      );
-      
-      optionButtons.forEach((button, index) => {
-        const isLeft = index === 0;
-        const isClicked = button === clickedButton;
-        
-        if (isClicked) {
-          // Обрана картка збільшується і зникає
-          gsap.to(button, {
-            scale: 1.1,
-            opacity: 0,
-            duration: 0.4,
-            ease: "power2.in",
-          });
-        } else {
-          // Інша картка від'їжджає вбік
-          gsap.to(button, {
-            x: isLeft ? -300 : 300,
-            opacity: 0,
-            rotation: isLeft ? -20 : 20,
-            scale: 0.8,
-            duration: 0.4,
-            ease: "power2.in",
-          });
-        }
-      });
-
-      // Анімація зникнення заголовка
-      if (questionHeaderRef.current) {
-        gsap.to(questionHeaderRef.current, {
-          opacity: 0,
-          y: -30,
-          scale: 0.9,
-          duration: 0.4,
-          ease: "power2.in",
-        });
-      }
-    }
-
     // Переходимо до наступного питання
     if (currentQuestion < questions.length) {
-      setTimeout(() => {
-        setCurrentQuestion(currentQuestion + 1);
-      }, 500);
+      setCurrentQuestion(currentQuestion + 1);
     } else {
       // Квіз завершено - показуємо результати
-      setTimeout(() => {
-        setShowResults(true);
-      }, 500);
+      setShowResults(true);
     }
   };
 
@@ -376,10 +259,7 @@ const QuizModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div 
-      className={styles.modalOverlay} 
-      onClick={handleBackdropClick}
-    >
+    <div className={styles.modalOverlay} onClick={handleBackdropClick}>
       <div className={styles.modalContent}>
         {/* Border frame - only on start screen */}
         {!isQuizStarted && (
@@ -542,8 +422,8 @@ const QuizModal = ({ isOpen, onClose }) => {
               </button>
             </div>
           ) : showResults ? (
-            <div 
-              ref={resultsContentRef} 
+            <div
+              ref={resultsContentRef}
               className={styles.resultsContent}
               onWheel={handleResultsContentWheel}
               onTouchMove={handleResultsContentTouchMove}
@@ -729,7 +609,9 @@ const QuizModal = ({ isOpen, onClose }) => {
                   onClick={handleTakeQuizAgain}
                 >
                   <span className={menuStyles.closeText}>
-                    <span className={menuStyles.closeWord}>TAKE THE QUIZ AGAIN</span>
+                    <span className={menuStyles.closeWord}>
+                      TAKE THE QUIZ AGAIN
+                    </span>
                     <span className={menuStyles.closeLineLeft}></span>
                     <span className={menuStyles.closeLineRight}></span>
                   </span>
@@ -803,7 +685,10 @@ const QuizModal = ({ isOpen, onClose }) => {
 
               {/* Options */}
               {currentQ && (
-                <div ref={optionsContainerRef} className={styles.optionsContainer}>
+                <div
+                  ref={optionsContainerRef}
+                  className={styles.optionsContainer}
+                >
                   {currentQ.options.map((option) => (
                     <button
                       key={option.id}

@@ -2,7 +2,7 @@
   min-height: 100vh;
   width: 100%;
   position: relative;
-  background-color: var(--color-section-bg);
+  background-color: rgba(0, 0, 0, 0.4); /* Напівпрозорий фон */
   overflow: hidden;
 }
 
@@ -23,7 +23,7 @@
 .wisdomContainerWrapper {
   position: absolute;
   bottom: var(--spacing-md);
-  left: var(--spacing-md);
+  left: calc(var(--spacing-md) - 200px);
   z-index: 5;
   width: fit-content;
 }
@@ -33,7 +33,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--spacing-lg);
+  gap: 0;
   background: transparent;
   padding: var(--spacing-lg);
   backdrop-filter: blur(20px);
@@ -53,8 +53,8 @@
 }
 
 .sphereIcon {
-  width: 120px;
-  height: 120px;
+  width: 360px;
+  height: 360px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,7 +76,7 @@
 .wisdomText {
   background: transparent;
   border: none;
-  padding: 1.5rem 1.625rem;
+  padding: 1rem 1rem 1rem 0.5rem;
   min-height: 120px;
   display: flex;
   align-items: center;
@@ -99,13 +99,13 @@
 
 @media (min-width: 1250px) {
   .wisdomText {
-    padding: 1.875rem 1.875rem 1.875rem 10rem;
+    padding: 1rem 1rem 1rem 1rem;
   }
 }
 
 @media (min-width: 1400px) {
   .wisdomText {
-    padding: 1.875rem 1.875rem 1.875rem 7.5rem;
+    padding: 1rem 1rem 1rem 1rem;
   }
 }
 
@@ -553,7 +553,7 @@
 
   .wisdomText {
     min-height: 100px;
-    padding: 1.5rem 1.625rem;
+    padding: 1rem 1rem 1rem 0.5rem;
   }
 
   .wisdomText p {
@@ -618,7 +618,7 @@
   }
 
   .wisdomText {
-    padding: 1.5rem 1.625rem;
+    padding: 1rem 1rem 1rem 0.5rem;
   }
 
   .wisdomText p {

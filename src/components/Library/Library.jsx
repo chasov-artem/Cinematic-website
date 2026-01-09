@@ -98,7 +98,20 @@ function Library() {
   };
 
   useEffect(() => {
-    return addSectionScrollAnimations(sectionRef, {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    // ScrollTrigger pin для фіксації секції
+    const pinTrigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: "bottom bottom",
+      pin: true,
+      pinSpacing: false,
+      scrub: 1,
+    });
+
+    const cleanupScrollAnimations = addSectionScrollAnimations(sectionRef, {
       topLogoRef,
       topButtonRef,
       leftButtonRef,
@@ -106,10 +119,26 @@ function Library() {
       watchButtonsRef,
       bottomCenterRef,
     });
+
+    return () => {
+      pinTrigger.kill();
+      if (cleanupScrollAnimations) {
+        cleanupScrollAnimations();
+      }
+    };
   }, []);
 
   return (
     <section ref={sectionRef} className={styles.librarySection} id="library">
+      {/* Preview images for section background */}
+      {stories.map((story) => (
+        <div
+          key={`preview-${story.id}`}
+          className={styles.previewImage}
+          data-story-id={story.id}
+          style={{ backgroundImage: `url(${story.image})` }}
+        ></div>
+      ))}
       {/* Top left logo */}
       <div ref={topLogoRef} className={welcomeStyles.topLogo}>
         <img
@@ -211,8 +240,13 @@ function Library() {
           const buttonClassName = `${styles.watchButton}${
             isActive ? ` ${styles.watchButtonActive}` : ""
           }`;
+          const story = stories[index - 1];
           return (
-            <div key={index} className={styles.watchButtonWrapper}>
+            <div 
+              key={index} 
+              className={styles.watchButtonWrapper}
+              data-story-id={story?.id}
+            >
               <button
                 className={buttonClassName}
                 data-active={isActive}

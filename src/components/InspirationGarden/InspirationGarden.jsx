@@ -6,7 +6,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { useMenu } from "../../contexts/MenuContext";
 import NavButtonRight from "../WelcomeSection/NavButtonRight";
 import NavButtonLeft from "../WelcomeSection/NavButtonLeft";
-import SphereIcon from "../WelcomeSection/SphereIcon";
+import ThreeSphereIcon from "../WelcomeSection/ThreeSphereIcon";
 import QuoteModal from "./QuoteModal";
 import welcomeStyles from "../WelcomeSection/WelcomeSection.module.css";
 import styles from "./InspirationGarden.module.css";
@@ -159,6 +159,19 @@ function InspirationGarden() {
   }, [currentTextIndex, showWisdomContainer, wisdomTexts.length]);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    // ScrollTrigger pin для фіксації секції
+    const pinTrigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: "bottom bottom",
+      pin: true,
+      pinSpacing: false,
+      scrub: 1,
+    });
+
     const cleanupScrollAnimations = addSectionScrollAnimations(sectionRef, {
       topLogoRef,
       topButtonRef,
@@ -212,6 +225,7 @@ function InspirationGarden() {
     }
 
     return () => {
+      pinTrigger.kill();
       if (cleanupScrollAnimations) {
         cleanupScrollAnimations();
       }
@@ -256,7 +270,7 @@ function InspirationGarden() {
               loading="lazy"
             />
             <div className={welcomeStyles.sphereIcon}>
-              <SphereIcon />
+              <ThreeSphereIcon />
             </div>
             <div className={welcomeStyles.wisdomContent}>
               <div className={welcomeStyles.wisdomText} ref={wisdomTextRef}>

@@ -1,0 +1,15 @@
+.threeSphereContainer {
+  width: 360px;
+  height: 360px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.threeSphereContainer canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}

@@ -3,7 +3,7 @@
   width: 100%;
   padding: var(--spacing-xl) 0;
   position: relative;
-  background-color: var(--color-black);
+  background-color: rgba(0, 0, 0, 0.4); /* Напівпрозорий фон */
 }
 
 /* Watch buttons container */

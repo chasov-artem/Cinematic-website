@@ -55,7 +55,20 @@ function Quiz() {
   };
 
   useEffect(() => {
-    return addSectionScrollAnimations(sectionRef, {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    // ScrollTrigger pin для фіксації секції
+    const pinTrigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: "bottom bottom",
+      pin: true,
+      pinSpacing: false,
+      scrub: 1,
+    });
+
+    const cleanupScrollAnimations = addSectionScrollAnimations(sectionRef, {
       topLogoRef,
       topButtonRef,
       leftButtonRef,
@@ -63,6 +76,13 @@ function Quiz() {
       watchButtonsRef: watchButtonRef,
       bottomCenterRef,
     });
+
+    return () => {
+      pinTrigger.kill();
+      if (cleanupScrollAnimations) {
+        cleanupScrollAnimations();
+      }
+    };
   }, []);
 
   return (
