@@ -232,7 +232,7 @@
 }
 
 .watchText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.6875rem;
   line-height: 1.27273;
@@ -337,7 +337,7 @@
   opacity: 0.6;
   margin: 0;
   white-space: nowrap;
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
   letter-spacing: 0.02em;
   display: flex;

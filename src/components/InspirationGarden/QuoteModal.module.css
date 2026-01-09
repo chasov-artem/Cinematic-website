@@ -86,7 +86,7 @@
 }
 
 .closeText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.75rem;
   line-height: 1.2;
@@ -246,7 +246,7 @@
 }
 
 .characterCode {
-  font-family: Modern Wakandan;
+  font-family: "Modern Wakandan", "Courier New", monospace;
   font-weight: 400;
   margin-right: -0.8em;
   color: #2df872;
@@ -270,7 +270,7 @@
 }
 
 .description {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
   margin-top: 2rem;
   color: silver;

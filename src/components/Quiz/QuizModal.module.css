@@ -54,7 +54,7 @@
 }
 
 .closeText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.75rem;
   line-height: 1.2;
@@ -177,7 +177,7 @@
 }
 
 .titleLine {
-  font-family: Gilroy, Helvetica, Arial, sans-serif;
+  font-family: Poppins, Gilroy, Helvetica, Arial, sans-serif;
   font-weight: 700;
   font-size: 6rem;
   line-height: 1.2;
@@ -193,7 +193,7 @@
 }
 
 .titleLineLarge {
-  font-family: "Domaine", "Times New Roman", "Georgia", serif;
+  font-family: "Playfair Display", "Domaine", "Times New Roman", "Georgia", serif;
   font-weight: 500;
   font-size: 6rem;
   line-height: 1.2;
@@ -222,7 +222,7 @@
 
 /* Instructions text */
 .instructionsText {
-  font-family: Gilroy, Helvetica, Arial, sans-serif;
+  font-family: Poppins, Gilroy, Helvetica, Arial, sans-serif;
   color: silver;
   padding: 1.5rem 1rem 2rem;
   letter-spacing: 0.02em;
@@ -252,7 +252,7 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   overflow: visible;
@@ -431,7 +431,7 @@
   position: relative;
   z-index: 1;
   color: #ffffff;
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -496,7 +496,7 @@
 }
 
 .keepExploringText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
   font-size: 0.75rem;
   line-height: 1.2;
@@ -618,7 +618,7 @@
   left: 150%;
   top: 50%;
   transform: translateY(-50%);
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -700,7 +700,7 @@
 }
 
 .questionNumber {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.625rem;
   line-height: 1;
@@ -730,12 +730,12 @@
 }
 
 .questionTitle span:first-child {
-  font-family: "Gill Sans", "Helvetica", "Arial", sans-serif;
+  font-family: "Lato", "Gill Sans", "Helvetica", "Arial", sans-serif;
   font-weight: 600;
 }
 
 .questionTitle span:nth-child(2) {
-  font-family: "Domaine", "Times New Roman", "Georgia", serif;
+  font-family: "Playfair Display", "Domaine", "Times New Roman", "Georgia", serif;
   font-weight: 400;
 }
 
@@ -822,7 +822,7 @@
 }
 
 .optionText {
-  font-family: "Gill Sans", "Helvetica", "Arial", sans-serif;
+  font-family: "Lato", "Gill Sans", "Helvetica", "Arial", sans-serif;
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 1.25;
@@ -903,7 +903,7 @@
 }
 
 .optionSubtitle {
-  font-family: "Modern Wakandan", sans-serif;
+  font-family: "Modern Wakandan", "Courier New", monospace;
   font-weight: 700;
   position: relative;
   color: #2df872;
@@ -930,7 +930,7 @@
   bottom: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
-  font-family: "Gill Sans", "Helvetica", "Arial", sans-serif;
+  font-family: "Lato", "Gill Sans", "Helvetica", "Arial", sans-serif;
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 1.25;
@@ -1016,7 +1016,7 @@
 }
 
 .resultsTitle {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.625rem;
   line-height: 1.2;
@@ -1029,7 +1029,7 @@
 }
 
 .resultsIntro {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
   font-size: 0.875rem;
   line-height: 1.57143;
@@ -1080,7 +1080,7 @@
 }
 
 .resultTitle span:first-child {
-  font-family: "Gill Sans", "Helvetica", "Arial", sans-serif;
+  font-family: "Lato", "Gill Sans", "Helvetica", "Arial", sans-serif;
   font-weight: 600;
   font-size: 2rem;
   letter-spacing: 0.15em;
@@ -1091,7 +1091,7 @@
 }
 
 .resultTitle span:nth-child(2) {
-  font-family: "Domaine", "Times New Roman", "Georgia", serif;
+  font-family: "Playfair Display", "Domaine", "Times New Roman", "Georgia", serif;
   font-weight: 400;
   font-size: 3.5rem;
   line-height: 1;
@@ -1102,7 +1102,7 @@
 }
 
 .resultSubtitle {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.5;
@@ -1114,7 +1114,7 @@
 }
 
 .resultDescription {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
   font-size: 0.875rem;
   line-height: 1.57143;
@@ -1141,7 +1141,7 @@
 }
 
 .scrollText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.625rem;
   line-height: 1.2;
@@ -1181,7 +1181,7 @@
 }
 
 .socialTitle {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   letter-spacing: 0.5em;
   position: relative;
@@ -1255,7 +1255,7 @@
 }
 
 .socialButtonText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 1.5rem;
   color: #ffffff;
@@ -1289,7 +1289,7 @@
 }
 
 .scrollText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.625rem;
   line-height: 1.2;
@@ -1395,7 +1395,7 @@
   position: relative;
   z-index: 1;
   color: #ffffff;
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -1473,7 +1473,7 @@
 }
 
 .takeQuizAgainText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.75rem;
   line-height: 1.2;

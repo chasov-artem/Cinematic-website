@@ -7,10 +7,17 @@
   --color-section-bg: #1a1a1a;
 
   /* Typography */
-  --font-gill-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  --font-display: "Playfair Display", serif;
-  --font-primary: "Gill Sans", "Helvetica", "Arial", sans-serif;
+  /* Використовуємо Google Fonts альтернативи з fallback на оригінальні назви */
+  --font-gill-sans: "Lato", "Gill Sans", "Helvetica", "Arial", sans-serif;
+  --font-display: "Playfair Display", "Domaine", "Times New Roman", "Georgia", serif;
+  --font-primary: "Lato", "Gill Sans", "Helvetica", "Arial", sans-serif;
+  --font-gilroy: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
+  --font-wakandan: "Modern Wakandan", "Courier New", monospace;
+  
+  /* Для прямого використання в CSS (без лапок) */
+  --font-gilroy-name: Poppins, Gilroy, Helvetica, Arial, sans-serif;
+  --font-domaine-name: Playfair Display, Domaine, Times New Roman, Georgia, serif;
+  --font-gill-sans-name: Lato, "Gill Sans", Helvetica, Arial, sans-serif;
 
   /* Spacing */
   --spacing-xs: 0.5rem;

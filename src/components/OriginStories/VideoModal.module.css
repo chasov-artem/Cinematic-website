@@ -82,7 +82,7 @@
 }
 
 .modalTitle {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.75rem;
   line-height: 1.2;
@@ -104,7 +104,7 @@
 }
 
 .closeText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.75rem;
   line-height: 1.2;
@@ -400,7 +400,7 @@
   z-index: 4;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-family: "Gill Sans", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Gill Sans", Helvetica, Arial, sans-serif;
 }
 
 .nameContainer {
@@ -409,7 +409,7 @@
 }
 
 .firstName {
-  font-family: "Gill Sans", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Gill Sans", Helvetica, Arial, sans-serif;
   font-weight: 600;
   font-size: 1.5rem;
   max-width: 20rem;
@@ -421,7 +421,7 @@
 }
 
 .lastName {
-  font-family: Domaine, "Times New Roman", Georgia, serif;
+  font-family: "Playfair Display", Domaine, "Times New Roman", Georgia, serif;
   font-weight: 400;
   position: relative;
   font-size: 1.5rem;
@@ -433,7 +433,7 @@
 }
 
 .role {
-  font-family: "Gill Sans", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Gill Sans", Helvetica, Arial, sans-serif;
   font-weight: 400;
   position: relative;
   font-size: 0.75rem;
@@ -451,7 +451,7 @@
 }
 
 .quote {
-  font-family: "Modern Wakandan", sans-serif;
+  font-family: "Modern Wakandan", "Courier New", monospace;
   font-weight: 700;
   position: relative;
   color: #2df872;
@@ -770,7 +770,7 @@
 
 /* Time Display */
 .timeDisplay {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-size: 0.75rem;
   font-weight: 400;
   color: #ffffff;

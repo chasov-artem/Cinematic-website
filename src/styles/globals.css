@@ -1,5 +1,30 @@
 @import './variables.css';
 
+/* Font Face Declarations */
+/* Примітка: Для використання оригінальних шрифтів (Gill Sans, Domaine, Gilroy, Modern Wakandan) 
+   потрібно завантажити файли шрифтів та додати @font-face правила тут */
+
+/* Gilroy - безкоштовні версії доступні на befonts.com */
+/* Для використання локальних файлів розкоментуйте та додайте шлях до файлів:
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-Light.woff2') format('woff2'),
+       url('/fonts/Gilroy-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-ExtraBold.woff2') format('woff2'),
+       url('/fonts/Gilroy-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
 * {
   margin: 0;
   padding: 0;
@@ -42,5 +67,22 @@ section {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Font utility classes для використання в CSS Modules */
+:global(.font-gilroy) {
+  font-family: var(--font-gilroy);
+}
+
+:global(.font-domaine) {
+  font-family: var(--font-display);
+}
+
+:global(.font-gill-sans) {
+  font-family: var(--font-gill-sans);
+}
+
+:global(.font-wakandan) {
+  font-family: var(--font-wakandan);
 }
 

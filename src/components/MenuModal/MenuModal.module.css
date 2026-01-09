@@ -36,7 +36,7 @@
 }
 
 .closeText {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.75rem;
   line-height: 1.2;
@@ -110,7 +110,7 @@
 }
 
 .navigationTitle {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 2rem;
   line-height: 1.2;
@@ -134,7 +134,7 @@
 }
 
 .sectionName {
-  font-family: "Gilroy", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", "Gilroy", "Helvetica", "Arial", sans-serif;
   font-weight: 700;
   font-size: 0.5rem;
   line-height: 1.2;
